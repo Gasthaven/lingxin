@@ -8,49 +8,109 @@
 <title>聆心 · 大学生情绪陪伴平台</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-body{background:#EDE8E1;font-family:'LXGW WenKai','PingFang SC','Microsoft YaHei',serif;min-height:100vh}
+
+/* ── CSS 自定义属性：统一管理主题色，深色/浅色切换仅需修改变量 ── */
+:root{
+  --bg:#F5F2EE;
+  --bg-outer:#EDE8E1;
+  --card:#fff;
+  --border:#EDE9E3;
+  --border-soft:#F0EDE7;
+  --txt:#2C2C2C;
+  --sub:#888;
+  --light:#bbb;
+  --brown:#B07B3A;
+  --brown-l:#F0E4CC;
+  --brown-hover:#FBF0E4;
+  --brown-grad-light:#C8894A;
+  --brown-grad-dark:#A06830;
+  --green:#3D6B5A;
+  --green-l:#D4E8DF;
+  --green-grad-light:#4A7A68;
+  --green-grad-dark:#2E5A48;
+  --rose:#8B5A5A;
+  --sidebar-bg:#fff;
+  --topbar-bg:#fff;
+  --hover-bg:#F7F4F0;
+  --input-bg:#F7F4F0;
+  --scrollbar:#D5CFC5;
+  --shadow:0 2px 12px rgba(0,0,0,.04);
+  --shadow-hover:0 6px 24px rgba(0,0,0,.08);
+  --opt-hover-border:#D4A870;
+  --opt-hover-bg:#FBF5EE;
+}
+body.dark{
+  --bg:#1A1A1E;
+  --bg-outer:#1A1A1E;
+  --card:#26262C;
+  --border:#38383F;
+  --border-soft:#38383F;
+  --txt:#EFEFEF;
+  --sub:#999;
+  --light:#555;
+  --brown:#C8894A;
+  --brown-l:#2E2014;
+  --brown-hover:#2E2014;
+  --brown-grad-light:#C8894A;
+  --brown-grad-dark:#A06830;
+  --green:#4A8A70;
+  --green-l:#1A2E28;
+  --green-grad-light:#4A7A68;
+  --green-grad-dark:#2E5A48;
+  --rose:#A07070;
+  --sidebar-bg:#1E1E24;
+  --topbar-bg:#1E1E24;
+  --hover-bg:#2A2A32;
+  --input-bg:#2C2C34;
+  --scrollbar:#38383F;
+  --shadow:0 2px 12px rgba(0,0,0,.25);
+  --shadow-hover:0 6px 24px rgba(0,0,0,.35);
+  --opt-hover-border:#C8894A;
+  --opt-hover-bg:#2E2014;
+}
+
+body{background:var(--bg-outer);font-family:'LXGW WenKai','PingFang SC','Microsoft YaHei',serif;min-height:100vh}
 button{cursor:pointer;font-family:inherit}
 input,textarea{font-family:inherit}
 textarea{resize:none}
 ::-webkit-scrollbar{width:4px;height:4px}
-::-webkit-scrollbar-thumb{background:#D5CFC5;border-radius:2px}
+::-webkit-scrollbar-thumb{background:var(--scrollbar);border-radius:2px}
 ::-webkit-scrollbar-track{background:transparent}
 
 /* ── Shell ── */
 #app{display:flex;min-height:100vh}
-#sidebar{width:220px;flex-shrink:0;background:#fff;border-right:1px solid #EDE9E3;position:fixed;top:0;left:0;height:100vh;z-index:200;display:flex;flex-direction:column;box-shadow:2px 0 16px rgba(0,0,0,.04)}
+#sidebar{width:220px;flex-shrink:0;background:var(--sidebar-bg);border-right:1px solid var(--border);position:fixed;top:0;left:0;height:100vh;z-index:200;display:flex;flex-direction:column;box-shadow:2px 0 16px rgba(0,0,0,.04)}
 #main{margin-left:220px;flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden}
-#topbar{height:60px;background:#fff;border-bottom:1px solid #EDE9E3;display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:99;flex-shrink:0}
-#content{flex:1;overflow-y:auto;padding:28px 32px 40px;background:#F5F2EE;min-height:0}
+#topbar{height:60px;background:var(--topbar-bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 28px;position:sticky;top:0;z-index:99;flex-shrink:0}
+#content{flex:1;overflow-y:auto;padding:28px 32px 40px;background:var(--bg);min-height:0}
 
 /* Sidebar parts */
-.sb-logo{padding:24px 20px 18px;border-bottom:1px solid #F0EDE7}
-.sb-logo-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,#C8894A,#A06830);display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;margin-bottom:10px}
-.sb-logo h1{font-size:20px;font-weight:800;color:#2C2C2C}
-.sb-logo p{font-size:10px;color:#bbb;letter-spacing:1px;margin-top:2px}
+.sb-logo{padding:24px 20px 18px;border-bottom:1px solid var(--border-soft)}
+.sb-logo-icon{width:44px;height:44px;border-radius:12px;background:linear-gradient(135deg,var(--brown-grad-light),var(--brown-grad-dark));display:flex;align-items:center;justify-content:center;font-size:22px;color:#fff;margin-bottom:10px}
+.sb-logo h1{font-size:20px;font-weight:800;color:var(--txt)}
+.sb-logo p{font-size:10px;color:var(--light);letter-spacing:1px;margin-top:2px}
 .sb-nav{flex:1;padding:14px 12px;overflow-y:auto}
 .nav-item{display:flex;align-items:center;gap:12px;padding:11px 14px;border-radius:12px;cursor:pointer;transition:all .18s;margin-bottom:3px;border:none;background:none;width:100%;text-align:left}
-.nav-item:hover{background:#F7F4F0}
-.nav-item.active{background:linear-gradient(135deg,#FBF0E4,#F5E4CC)}
+.nav-item:hover{background:var(--hover-bg)}
+.nav-item.active{background:linear-gradient(135deg,var(--brown-hover),var(--brown-l))}
 .nav-item .ni{font-size:20px;flex-shrink:0}
-.nav-item .nl{font-size:14px;font-weight:600;color:#777}
-.nav-item.active .nl{color:#B07B3A}
-.sb-footer{padding:16px 20px;border-top:1px solid #F0EDE7}
-.sb-footer p{font-size:11px;color:#ccc;line-height:1.7}
+.nav-item .nl{font-size:14px;font-weight:600;color:var(--sub)}
+.nav-item.active .nl{color:var(--brown)}
+.sb-footer{padding:16px 20px;border-top:1px solid var(--border-soft)}
+.sb-footer p{font-size:11px;color:var(--light);line-height:1.7}
 
 /* Topbar */
-.tb-title{font-size:18px;font-weight:800;color:#2C2C2C}
-.tb-sub{font-size:11px;color:#bbb;margin-top:1px}
+.tb-title{font-size:18px;font-weight:800;color:var(--txt)}
+.tb-sub{font-size:11px;color:var(--light);margin-top:1px}
 .tb-actions{display:flex;gap:8px;align-items:center}
-.tb-btn{width:36px;height:36px;border-radius:10px;border:1px solid #EDE9E3;background:#F7F4F0;display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:background .15s}
-.tb-btn:hover{background:#EDE9E3}
-.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:#B07B3A;font-size:14px;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer;transition:background .15s}
-.back-btn:hover{background:#FBF0E4}
-.top-hdr{position:fixed;top:0;left:0;right:0;height:56px;background:#fff;border-bottom:1px solid #EDE9E3;display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:150;flex-shrink:0}
-body.dark .top-hdr{background:#1E1E24;border-color:#38383F}
+.tb-btn{width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:var(--hover-bg);display:flex;align-items:center;justify-content:center;font-size:16px;cursor:pointer;transition:background .15s}
+.tb-btn:hover{background:var(--border)}
+.back-btn{display:flex;align-items:center;gap:6px;background:none;border:none;color:var(--brown);font-size:14px;font-weight:600;padding:6px 12px;border-radius:8px;cursor:pointer;transition:background .15s}
+.back-btn:hover{background:var(--brown-hover)}
+.top-hdr{position:fixed;top:0;left:0;right:0;height:56px;background:var(--topbar-bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 16px;z-index:150;flex-shrink:0}
 
 /* Card */
-.card{background:#fff;border-radius:16px;border:1px solid #EDE9E3;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.card{background:var(--card);border-radius:16px;border:1px solid var(--border);box-shadow:var(--shadow)}
 
 /* Banner */
 .banner{border-radius:18px;overflow:hidden;margin-bottom:24px;padding:28px 28px 24px;display:flex;justify-content:space-between;align-items:flex-start;min-height:120px}
@@ -65,51 +125,51 @@ body.dark .top-hdr{background:#1E1E24;border-color:#38383F}
 
 /* Grids */
 .quiz-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
-.sec-title{font-weight:700;font-size:16px;color:#2C2C2C;margin:0 0 14px;display:flex;align-items:center;gap:8px}
+.sec-title{font-weight:700;font-size:16px;color:var(--txt);margin:0 0 14px;display:flex;align-items:center;gap:8px}
 .hscroll{display:flex;gap:12px;overflow-x:auto;padding-bottom:10px;margin-bottom:8px}
 
 /* Opt buttons */
-.opt-btn{padding:14px 18px;border-radius:12px;font-size:14px;text-align:left;border:1.5px solid #EDE9E3;background:#fff;color:#2C2C2C;width:100%;margin-bottom:10px;font-weight:500;transition:all .15s;cursor:pointer}
-.opt-btn:hover{border-color:#D4A870;background:#FBF5EE}
-.opt-btn.selected{border-color:#B07B3A;background:#F0E4CC}
+.opt-btn{padding:14px 18px;border-radius:12px;font-size:14px;text-align:left;border:1.5px solid var(--border);background:var(--card);color:var(--txt);width:100%;margin-bottom:10px;font-weight:500;transition:all .15s;cursor:pointer}
+.opt-btn:hover{border-color:var(--opt-hover-border);background:var(--opt-hover-bg)}
+.opt-btn.selected{border-color:var(--brown);background:var(--brown-l)}
 
 /* Progress */
-.progress{height:5px;background:#EDE9E3;border-radius:3px;margin-bottom:22px;overflow:hidden}
-.progress-fill{height:100%;background:#B07B3A;border-radius:3px;transition:width .3s}
+.progress{height:5px;background:var(--border);border-radius:3px;margin-bottom:22px;overflow:hidden}
+.progress-fill{height:100%;background:var(--brown);border-radius:3px;transition:width .3s}
 
 /* Chat layout */
 .chat-shell{display:flex;height:calc(100vh - 60px)}
-.chat-left{width:280px;flex-shrink:0;border-right:1px solid #EDE9E3;background:#fff;display:flex;flex-direction:column;overflow:hidden}
-.chat-right{flex:1;display:flex;flex-direction:column;background:#F5F2EE;overflow:hidden}
-.chat-tab-bar{display:flex;border-bottom:1px solid #EDE9E3;flex-shrink:0}
-.chat-tab-bar button{flex:1;padding:14px 0;background:none;border:none;font-size:13px;font-weight:600;color:#888;border-bottom:2px solid transparent;cursor:pointer;transition:all .2s}
-.chat-tab-bar button.active{color:#B07B3A;border-bottom-color:#B07B3A}
+.chat-left{width:280px;flex-shrink:0;border-right:1px solid var(--border);background:var(--card);display:flex;flex-direction:column;overflow:hidden}
+.chat-right{flex:1;display:flex;flex-direction:column;background:var(--bg);overflow:hidden}
+.chat-tab-bar{display:flex;border-bottom:1px solid var(--border);flex-shrink:0}
+.chat-tab-bar button{flex:1;padding:14px 0;background:none;border:none;font-size:13px;font-weight:600;color:var(--sub);border-bottom:2px solid transparent;cursor:pointer;transition:all .2s}
+.chat-tab-bar button.active{color:var(--brown);border-bottom-color:var(--brown)}
 .chat-panel{flex:1;overflow-y:auto;padding:16px}
 .chat-msgs{flex:1;overflow-y:auto;padding:24px 28px 0}
 .bubble{max-width:56%;min-width:120px;padding:13px 17px;font-size:14px;line-height:1.8;white-space:normal;word-break:break-word;word-wrap:break-word}
-.bubble.ai{border-radius:4px 18px 18px 18px;background:#fff;color:#2C2C2C;border:1px solid #EDE9E3;box-shadow:0 1px 6px rgba(0,0,0,.04)}
-.bubble.user{border-radius:18px 4px 18px 18px;background:linear-gradient(135deg,#C8894A,#A06830);color:#fff}
+.bubble.ai{border-radius:4px 18px 18px 18px;background:var(--card);color:var(--txt);border:1px solid var(--border);box-shadow:0 1px 6px rgba(0,0,0,.04)}
+.bubble.user{border-radius:18px 4px 18px 18px;background:linear-gradient(135deg,var(--brown-grad-light),var(--brown-grad-dark));color:#fff}
 .avatar{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;align-self:flex-end}
 .mood-tags{padding:10px 28px 0;display:flex;gap:8px;flex-wrap:wrap}
-.mood-tag{padding:6px 14px;border-radius:20px;font-size:12px;background:#fff;border:1px solid #EDE9E3;color:#888;white-space:nowrap;font-weight:500;cursor:pointer;transition:all .15s}
-.mood-tag:hover{background:#FBF0E4;border-color:#B07B3A;color:#B07B3A}
-.chat-input-row{padding:14px 28px 20px;display:flex;gap:10px;background:#fff;border-top:1px solid #EDE9E3;flex-shrink:0}
-.chat-input{flex:1;padding:13px 18px;border-radius:26px;font-size:14px;border:1.5px solid #EDE9E3;outline:none;background:#F7F4F0;color:#2C2C2C;transition:border-color .2s}
-.chat-input:focus{border-color:#B07B3A;background:#fff}
-.send-btn{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#C8894A,#A06830);border:none;color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.mood-tag{padding:6px 14px;border-radius:20px;font-size:12px;background:var(--card);border:1px solid var(--border);color:var(--sub);white-space:nowrap;font-weight:500;cursor:pointer;transition:all .15s}
+.mood-tag:hover{background:var(--brown-hover);border-color:var(--brown);color:var(--brown)}
+.chat-input-row{padding:14px 28px 20px;display:flex;gap:10px;background:var(--card);border-top:1px solid var(--border);flex-shrink:0}
+.chat-input{flex:1;padding:13px 18px;border-radius:26px;font-size:14px;border:1.5px solid var(--border);outline:none;background:var(--input-bg);color:var(--txt);transition:border-color .2s}
+.chat-input:focus{border-color:var(--brown);background:var(--card)}
+.send-btn{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--brown-grad-light),var(--brown-grad-dark));border:none;color:#fff;font-size:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 
 /* Mood */
 .mood-btns{display:flex;gap:10px;margin-bottom:16px}
-.mood-btn{flex:1;padding:14px 0;border-radius:12px;border:2px solid #EDE9E3;background:#F5F2EE;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all .15s}
+.mood-btn{flex:1;padding:14px 0;border-radius:12px;border:2px solid var(--border);background:var(--bg);display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all .15s}
 .mood-btn:hover{transform:translateY(-2px)}
 
 /* Canvas */
-.canvas-wrap{border-radius:16px;overflow:hidden;border:1px solid #EDE9E3;background:#FAFAF8;touch-action:none}
+.canvas-wrap{border-radius:16px;overflow:hidden;border:1px solid var(--border);background:#FAFAF8;touch-action:none}
 canvas{display:block;width:100%;height:auto;touch-action:none}
 
 /* Animations */
 @keyframes dot{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
-.dot-anim{display:inline-block;width:7px;height:7px;border-radius:50%;background:#B07B3A;margin:0 2px;animation:dot 1s infinite}
+.dot-anim{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--brown);margin:0 2px;animation:dot 1s infinite}
 
 /* ── iOS-style animations ── */
 
@@ -172,7 +232,7 @@ button:active,.nav-item:active,.mood-tag:active,.opt-btn:active{
 
 /* 输入框聚焦 */
 .chat-input{transition:border-color .25s cubic-bezier(.25,.46,.45,.94),background .25s,box-shadow .25s}
-.chat-input:focus{border-color:#B07B3A;background:#fff;box-shadow:0 0 0 3px rgba(176,123,58,.1)}
+.chat-input:focus{border-color:var(--brown);background:var(--card);box-shadow:0 0 0 3px rgba(176,123,58,.1)}
 
 /* Mobile nav (hidden on PC) */
 .mobile-nav{display:none}
@@ -212,14 +272,15 @@ button:active,.nav-item:active,.mood-tag:active,.opt-btn:active{
     display:flex;position:fixed;bottom:0;left:0;right:0;
     background:rgba(255,255,255,.97);
     backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
-    border-top:1px solid #EDE9E3;z-index:300;padding:6px 0 env(safe-area-inset-bottom,12px)
+    border-top:1px solid var(--border);z-index:300;padding:6px 0 env(safe-area-inset-bottom,12px)
   }
+  body.dark .mobile-nav{background:rgba(26,26,30,.97)}
   .mobile-nav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;background:none;border:none;padding:4px 0;cursor:pointer;transition:transform .15s}
   .mobile-nav button:active{transform:scale(.92)}
   .mobile-nav button .mi{font-size:21px}
-  .mobile-nav button .ml{font-size:10px;font-weight:600;color:#bbb;letter-spacing:.2px}
-  .mobile-nav button.active .ml{color:#B07B3A}
-  .mobile-nav button .mdot{width:18px;height:2px;border-radius:1px;background:#B07B3A;margin-top:1px}
+  .mobile-nav button .ml{font-size:10px;font-weight:600;color:var(--light);letter-spacing:.2px}
+  .mobile-nav button.active .ml{color:var(--brown)}
+  .mobile-nav button .mdot{width:18px;height:2px;border-radius:1px;background:var(--brown);margin-top:1px}
 
   /* 顶栏返回按钮缩小 */
   .back-btn{font-size:13px;padding:4px 10px}
@@ -244,115 +305,19 @@ button:active,.nav-item:active,.mood-tag:active,.opt-btn:active{
   .bubble{max-width:88%}
 }
 
-body.dark #sidebar{background:#1E1E24;border-color:#38383F}
-body.dark #topbar{background:#1E1E24;border-color:#38383F}
-body.dark #content{background:#1A1A1E}
-body.dark .card{background:#26262C;border-color:#38383F;box-shadow:0 2px 12px rgba(0,0,0,.25)}
-body.dark .chat-left{background:#1E1E24;border-color:#38383F}
-body.dark .chat-right{background:#18181C}
-body.dark .chat-input-row{background:#1E1E24;border-color:#38383F}
-body.dark .chat-input{background:#2C2C34;border-color:#38383F;color:#EFEFEF}
-body.dark .chat-input:focus{border-color:#C8894A;background:#26262C;box-shadow:0 0 0 3px rgba(200,137,74,.15)}
-body.dark .bubble.ai{background:#26262C;border-color:#38383F;color:#EFEFEF}
-body.dark .mood-tags{background:transparent}
-body.dark .mood-tag{background:#26262C;border-color:#38383F;color:#999}
-body.dark .mood-tag:hover{background:#2E2820;border-color:#C8894A;color:#C8894A}
-body.dark .chat-tab-bar{border-color:#38383F}
-body.dark .chat-tab-bar button{color:#999}
-body.dark .chat-tab-bar button.active{color:#C8894A;border-bottom-color:#C8894A}
-body.dark .nav-item .nl{color:#999}
-body.dark .nav-item:hover{background:#2A2A32}
-body.dark .nav-item.active{background:linear-gradient(135deg,#2E2014,#26180A)}
-body.dark .nav-item.active .nl{color:#C8894A}
-body.dark .sb-footer p{color:#444}
-body.dark .tb-title{color:#EFEFEF}
-body.dark .tb-sub{color:#999}
-body.dark .progress{background:#38383F}
-body.dark .opt-btn{background:#26262C;border-color:#38383F;color:#EFEFEF}
-body.dark .opt-btn:hover{border-color:#C8894A;background:#2E2014}
-body.dark .back-btn{color:#C8894A}
-body.dark .back-btn:hover{background:#2E2014}
-body.dark h1,body.dark h2,body.dark h3{color:#EFEFEF}
+/* ── 深色模式：CSS 变量已自动处理，仅需补充特殊覆盖 ── */
 
-/* 深色模式 mobile-nav */
-body.dark .mobile-nav{
-  background:rgba(26,26,30,.97);
-  border-top-color:#38383F;
-}
-body.dark .mobile-nav button .ml{color:#555}
-body.dark .mobile-nav button.active .ml{color:#C8894A}
-body.dark .mobile-nav button .mdot{background:#C8894A}
-
-/* ── 深色模式补充：覆盖所有写死颜色的元素 ── */
-
-/* 通用文字 */
-body.dark{color:#EFEFEF}
+/* 通用文字继承 */
+body.dark{color:var(--txt)}
 body.dark p,body.dark span,body.dark div,body.dark label{color:inherit}
 
-/* 侧边栏 */
-body.dark .sb-logo h1{color:#EFEFEF}
-body.dark .sb-logo p{color:#555}
-body.dark .sb-footer p{color:#484848}
+/* placeholder 颜色 */
+body.dark .chat-input::placeholder{color:var(--light)}
 
-/* 顶栏 */
-body.dark .tb-title{color:#EFEFEF}
-body.dark .tb-sub{color:#666}
-body.dark #dark-label{color:#555!important}
-
-/* 页面背景 */
-body.dark #content{background:#1A1A1E}
-body.dark .chat-right{background:#18181C}
-
-/* 卡片内文字 */
-body.dark .card *{color:#EFEFEF}
-body.dark .card .sec-title{color:#EFEFEF}
-
-/* sec-title */
-body.dark .sec-title{color:#EFEFEF}
-
-/* banner 文字不变（本身是彩色背景白字） */
+/* banner / 气泡文字（彩色背景白字，不受变量影响） */
 body.dark .banner h2,body.dark .banner .sub,body.dark .banner .label,body.dark .banner .icon{color:inherit}
-
-/* 测试题目区域 */
-body.dark .progress{background:#38383F}
-body.dark .progress-fill{background:#C8894A}
-
-/* 聊天气泡 user 不变（棕色渐变白字）*/
-body.dark .bubble.user{color:#fff}
-body.dark .bubble.ai{color:#EFEFEF;background:#2A2A32;border-color:#38383F}
-
-/* 输入区 */
-body.dark .chat-input-row{background:#1E1E24;border-color:#38383F}
-body.dark .chat-input{color:#EFEFEF;background:#2A2A32;border-color:#38383F}
-body.dark .chat-input::placeholder{color:#555}
-
-/* 心情标签 */
-body.dark .mood-tags{background:transparent}
-
-/* 知愈馆文章卡片 */
-body.dark .hscroll .card *{color:#EFEFEF}
-
-/* 测验选项按钮 */
-body.dark .opt-btn{color:#EFEFEF;background:#26262C;border-color:#38383F}
-body.dark .opt-btn:hover{background:#2E2014;border-color:#C8894A;color:#EFEFEF}
-
-/* 弹窗 */
-
-/* 历史记录 */
-body.dark .chat-panel{background:#1E1E24}
-
-/* quiz grid 卡片 */
-body.dark .quiz-grid .card{background:#26262C;border-color:#38383F}
-body.dark .quiz-grid .card *{color:#EFEFEF}
-
-/* 结果页 */
 body.dark .g-brown *,body.dark .g-green *,body.dark .g-rose *,body.dark .g-purple *{color:#fff}
-
-/* 知识详情页 */
-
-/* 心情馆 */
-body.dark .mood-btn{background:#26262C;border-color:#38383F}
-body.dark .mood-btn *{color:#EFEFEF}
+body.dark .bubble.user{color:#fff}
 
 /* 深色模式切换按钮动画 */
 .dark-toggle{
@@ -379,7 +344,7 @@ body.dark .mood-btn *{color:#EFEFEF}
   padding:32px 28px 40px;
   transition:opacity .4s cubic-bezier(.25,.46,.45,.94);
 }
-body.dark #onboarding{background:#1A1A1E}
+body.dark #onboarding{background:var(--bg)}
 #onboarding.hiding{opacity:0;pointer-events:none}
 
 .ob-slides{width:100%;max-width:380px;overflow:hidden;position:relative;flex:1;display:flex;align-items:center}
@@ -388,7 +353,7 @@ body.dark #onboarding{background:#1A1A1E}
 
 .ob-icon-wrap{
   width:110px;height:110px;border-radius:32px;
-  background:linear-gradient(135deg,#C8894A,#A06830);
+  background:linear-gradient(135deg,var(--brown-grad-light),var(--brown-grad-dark));
   display:flex;align-items:center;justify-content:center;
   font-size:52px;margin-bottom:32px;
   box-shadow:0 12px 40px rgba(176,123,58,.3);
@@ -396,20 +361,17 @@ body.dark #onboarding{background:#1A1A1E}
 }
 @keyframes obIconIn{from{transform:scale(.6) translateY(20px);opacity:0}to{transform:scale(1) translateY(0);opacity:1}}
 
-.ob-title{font-size:24px;font-weight:900;color:#2C2C2C;margin-bottom:12px;line-height:1.3}
-body.dark .ob-title{color:#EFEFEF}
-.ob-desc{font-size:15px;color:#888;line-height:1.8;max-width:300px}
-body.dark .ob-desc{color:#999}
+.ob-title{font-size:24px;font-weight:900;color:var(--txt);margin-bottom:12px;line-height:1.3}
+.ob-desc{font-size:15px;color:var(--sub);line-height:1.8;max-width:300px}
 
 .ob-dots{display:flex;gap:8px;margin:32px 0 24px}
-.ob-dot{width:8px;height:8px;border-radius:4px;background:#EDE9E3;transition:all .3s cubic-bezier(.25,.46,.45,.94)}
-body.dark .ob-dot{background:#38383F}
-.ob-dot.active{width:24px;background:#B07B3A}
+.ob-dot{width:8px;height:8px;border-radius:4px;background:var(--border);transition:all .3s cubic-bezier(.25,.46,.45,.94)}
+.ob-dot.active{width:24px;background:var(--brown)}
 
 .ob-btns{width:100%;max-width:380px;display:flex;flex-direction:column;gap:10px}
 .ob-next{
   width:100%;padding:16px;border-radius:16px;border:none;
-  background:linear-gradient(135deg,#C8894A,#A06830);
+  background:linear-gradient(135deg,var(--brown-grad-light),var(--brown-grad-dark));
   color:#fff;font-size:16px;font-weight:700;cursor:pointer;
   font-family:inherit;
   box-shadow:0 4px 20px rgba(176,123,58,.35);
@@ -418,12 +380,10 @@ body.dark .ob-dot{background:#38383F}
 .ob-next:active{transform:scale(.97);box-shadow:0 2px 10px rgba(176,123,58,.25)}
 .ob-skip{
   width:100%;padding:12px;border-radius:16px;border:none;
-  background:none;color:#bbb;font-size:14px;cursor:pointer;font-family:inherit;
+  background:none;color:var(--light);font-size:14px;cursor:pointer;font-family:inherit;
   transition:color .2s;
 }
-.ob-skip:hover{color:#888}
-body.dark .ob-skip{color:#555}
-body.dark .ob-skip:hover{color:#999}
+.ob-skip:hover{color:var(--sub)}
 
 /* ── Agent 技能卡片动画 ── */
 
@@ -460,7 +420,7 @@ body.dark .ob-skip:hover{color:#999}
       <div class="tb-sub" id="tb-sub">探索真实的你</div>
     </div>
     <div id="tb-right" style="display:flex;align-items:center;gap:8px">
-      <span id="dark-label" style="font-size:11px;color:#bbb;letter-spacing:.5px"></span>
+      <span id="dark-label" style="font-size:11px;color:var(--light);letter-spacing:.5px"></span>
       <button id="dark-toggle-btn" class="dark-toggle" onclick="setState({darkMode:!state.darkMode})" title="切换深色模式"></button>
     </div>
   </div>
@@ -481,7 +441,7 @@ body.dark .ob-skip:hover{color:#999}
       <div class="ob-slide">
         <div class="ob-icon-wrap" style="background:linear-gradient(135deg,#C8894A,#A06830);box-shadow:0 12px 40px rgba(176,123,58,.3)">💬</div>
         <div class="ob-title">暖心窝</div>
-        <div class="ob-desc">AI 随时倾听你的心声，也可以匹配有相似经历的同路人，或加入温暖的小圈子互相陪伴。</div>
+        <div class="ob-desc">AI 随时倾听你的心声，陪你走过每一段心路历程。</div>
       </div>
       <!-- Slide 3: 知愈馆 -->
       <div class="ob-slide">
@@ -549,20 +509,45 @@ const G_GREEN = 'linear-gradient(135deg,#4A7A68,#2E5A48)';
 const G_ROSE  = 'linear-gradient(135deg,#A06868,#7A4848)';
 const G_PURPLE = 'linear-gradient(135deg,#C8A0C0,#8870A8,#6858A0)';
 
-// ─── MBTI FULL VERSION FACTORY ────────────────────────────────────────────────
-function createMbtiFullVersion() {
-  const base = QUIZZES.find(x=>x.id==='mbti');
-  return Object.assign({}, base, {
-    title:'MBTI 性格（完整版）', count:'60题', time:'约25分钟',
-    questions: MBTI_FULL_QUESTIONS,
-    results:[
-      {range:[0,22],title:"内省探索型 🌙",tag:"INFP / INTJ 风格",desc:"你拥有丰富的内心世界，思考深邃细腻。独处是充电而非孤独，你有强烈的自我价值观，对真实和意义有天然的追求，在深度关系中才真正绽放。"},
-      {range:[23,52],title:"平衡适应型 🌿",tag:"ISFJ / ENFJ 风格",desc:"你兼具感性与理性，能灵活切换社交与独处模式。你关注他人感受，重视关系的维护，是团队中的润滑剂，也是身边人信赖的精神支柱。"},
-      {range:[53,112],title:"务实行动型 🌻",tag:"ESTJ / ISTJ 风格",desc:"你重视现实、效率和秩序。有强烈的责任感，言出必行，擅长把事情落实到位。你的可靠性让周围的人感到安心。"},
-      {range:[113,180],title:"活力连接型 ☀️",tag:"ENFP / ENTJ 风格",desc:"你充满活力与感染力，享受与人连接的过程，思维开阔，善于激励他人。你是天然的领导者和创意者，能让整个团队充满能量。"},
-    ]
-  });
-}
+// ─── MBTI 16 TYPE DEFINITIONS ────────────────────────────────────────────────
+const MBTI_TYPES = {
+  INTJ:{emoji:"♟️",name:"建筑师",desc:"你是富有想象力的战略家，拥有缜密的计划能力。你善于洞察事物的本质，用理性和远见规划未来。内心有强烈的求知欲和独立精神，对自己认定的目标坚定不移。"},
+  INTP:{emoji:"🔬",name:"逻辑学家",desc:"你是灵活创新的思考者，对知识有纯粹的渴望。你善于发现事物间的逻辑关系，喜欢从不同角度分析问题。内心充满好奇心，对理论和概念有天然的热爱。"},
+  ENTJ:{emoji:"👑",name:"指挥官",desc:"你是天生的领导者，勇敢果断，善于发现机遇并付诸行动。你具有强大的意志力和组织能力，能将复杂的问题拆解并高效推进。对目标有执着的追求。"},
+  ENTP:{emoji:"💡",name:"辩论家",desc:"你是聪明好奇的思想者，喜欢挑战传统和探索可能。你思维敏捷，善于在辩论中发现新视角。面对问题时总能找到创造性的解决方案，享受智力碰撞的过程。"},
+  INFJ:{emoji:"🌙",name:"提倡者",desc:"你是安静而坚定的理想主义者，拥有深刻的洞察力和同理心。你关注他人的成长和意义，内心有清晰的价值观。善于在复杂中看到方向，默默为心中的信念努力。"},
+  INFP:{emoji:"🌸",name:"调停者",desc:"你是温柔真诚的理想主义者，内心世界丰富而深邃。你追求真实和意义，对情感有敏锐的感知。重视个人价值观，在创造和表达中找到自我，对重要的人事物全心全意。"},
+  ENFJ:{emoji:"🤝",name:"主人公",desc:"你是富有魅力的引导者，善于鼓舞和关怀他人。你对人际关系有天生的敏感度，善于发现他人的潜力。充满使命感，乐于帮助他人成长，是团队的核心凝聚力。"},
+  ENFP:{emoji:"✨",name:"竞选者",desc:"你是热情洋溢的创意者，对生活充满好奇和热情。你善于发现生活中的可能性和美好，思维开阔灵活。在社交中充满感染力，追求自由和真实，是天生的沟通者。"},
+  ISTJ:{emoji:"📋",name:"物流师",desc:"你是踏实可靠的实际主义者，重视秩序和事实。你有强烈的责任感和执行力，言出必行。善于用经验和逻辑解决问题，是值得信赖的伙伴，为团队提供稳定性。"},
+  ISFJ:{emoji:"🛡️",name:"守卫者",desc:"你是温暖细致的守护者，默默关心身边每一个人。你善于关注细节和他人的需求，有很强的耐心和奉献精神。重视和谐与稳定，是身边人信赖的温暖港湾。"},
+  ESTJ:{emoji:"⚙️",name:"总经理",desc:"你是务实高效的管理者，善于组织和推进事务。你重视规则和效率，有出色的执行力和决断力。对责任有清晰的认知，擅长将混乱化为秩序，是天生的管理者。"},
+  ESFJ:{emoji:"💝",name:"执政官",desc:"你是热心周到的协调者，善于营造和谐的氛围。你对他人的需求高度敏感，乐于提供帮助和支持。重视传统和关系，是团队的润滑剂，让身边的人感到被关怀和温暖。"},
+  ISTP:{emoji:"🔧",name:"鉴赏家",desc:"你是灵活务实的探索者，善于用双手和工具解决问题。你喜欢拆解和了解事物的运作方式，在实践中学习。冷静理性，面对突发状况能迅速反应，享受自由和冒险。"},
+  ISFP:{emoji:"🎨",name:"探险家",desc:"你是温和敏感的艺术家，对美和情感有敏锐的感知。你重视当下的体验和个人的自由，不喜欢被规则束缚。善于发现生活中的美，用独特的方式表达自我，温柔而有力量。"},
+  ESTP:{emoji:"⚡",name:"企业家",desc:"你是精力充沛的行动派，善于在当下抓住机会。你思维敏捷，喜欢直接体验和冒险。面对挑战时充满热情，善于随机应变，在社交和行动中找到能量，是天生的实干家。"},
+  ESFP:{emoji:"🎉",name:"表演者",desc:"你是热情洋溢的享乐主义者，善于享受和创造快乐。你对生活充满热爱，在人群中如鱼得水。审美敏锐，善于发现当下的美好，用活力和感染力让周围的人也感到快乐。"},
+};
+
+// ─── MBTI 维度映射（题号→维度）── 选项0,1偏向第一极；选项2,3偏向第二极 ──────────────
+const MBTI_DIM_MAP = [
+  // E/I (0-14): 15题
+  'EI','EI','EI','EI','EI','EI','EI','EI','EI','EI','EI','EI','EI','EI','EI',
+  // S/N (15-25): 11题
+  'SN','SN','SN','SN','SN','SN','SN','SN','SN','SN','SN',
+  // T/F (26-36): 11题
+  'TF','TF','TF','TF','TF','TF','TF','TF','TF','TF','TF',
+  // J/P (37-48): 12题
+  'JP','JP','JP','JP','JP','JP','JP','JP','JP','JP','JP','JP',
+  // E/I 补充 (49-51): 3题
+  'EI','EI','EI',
+  // S/N 补充 (52-55): 4题
+  'SN','SN','SN','SN',
+  // T/F 补充 (56-57): 2题
+  'TF','TF',
+  // J/P 补充 (58-59): 2题
+  'JP','JP',
+];
 
 // ─── STATE ────────────────────────────────────────────────────────────────────
 let state = {
@@ -571,8 +556,8 @@ let state = {
   // quiz
   quizActive: null, quizStep: 0, quizAns: {}, quizResult: null,
   // chat
-  chatTab: "ai", chatMsgs: [{role:"ai", text:'想聊聊吗？'}],
-  chatInput: "", chatLoading: false, chatFilter: "全部", activeGroup: null,
+  chatMsgs: [{role:"ai", text:'想聊聊吗？'}],
+  chatInput: "", chatLoading: false,
   chatStyle: (()=>{ try { return localStorage.getItem('lx_style')||'gentle'; } catch{ return 'gentle'; } })(),
   chatListening: false,
   showHistory: false,
@@ -590,13 +575,50 @@ let state = {
   // meditate
   medStarted: false, medStep: 0,
   // gratitude
-  gratItems: ["","",""], gratSaved: [],
+  gratItems: ["","",""],
   // doodle
   doodleTool: "pen", doodleColor: "#B07B3A", doodleSize: 6,
-  activePeer: null,
+  // gratitude saved entries (persisted to localStorage so AI memory survives refresh)
+  gratSaved: (() => { try { return JSON.parse(localStorage.getItem('lx_grat')||'[]'); } catch { return []; } })(),
   // personal profile
   userProfile: (() => { try { return JSON.parse(localStorage.getItem('lx_profile')||'null'); } catch{ return null; } })(),
+  // quiz draft (for "暂时离开" feature)
+  quizDraft: (() => { try { return JSON.parse(localStorage.getItem('lx_quiz_draft')||'null'); } catch{ return null; } })(),
 };
+
+function saveQuizDraft() {
+  const { quizActive, quizStep, quizAns, returnTo } = state;
+  if (!quizActive || quizStep === undefined) return;
+  const draft = {
+    quizId: quizActive.id,
+    quizTitle: quizActive.title,
+    quizStep: quizStep,
+    quizAns: quizAns,
+    returnTo: returnTo || null,
+    savedAt: Date.now(),
+  };
+  state.quizDraft = draft;
+  try { localStorage.setItem('lx_quiz_draft', JSON.stringify(draft)); } catch{}
+}
+
+function clearQuizDraft() {
+  state.quizDraft = null;
+  try { localStorage.removeItem('lx_quiz_draft'); } catch{}
+}
+
+function resumeQuizDraft() {
+  const draft = state.quizDraft;
+  if (!draft) return;
+  const quiz = ALL_QUIZZES.find(q => q.id === draft.quizId) || QUIZZES.find(q => q.id === draft.quizId);
+  if (!quiz) { clearQuizDraft(); return; }
+  setState({
+    quizActive: quiz,
+    quizStep: draft.quizStep || 0,
+    quizAns: draft.quizAns || {},
+    quizResult: null,
+    returnTo: draft.returnTo || null,
+  });
+}
 
 function saveProfile(profile) {
   state.userProfile = profile;
@@ -605,26 +627,110 @@ function saveProfile(profile) {
 function updateProfile(patch) {
   const newProfile = { ...(state.userProfile || {}), ...patch };
   saveProfile(newProfile);
-  render();
 }
-function buildProfileContext() {
+
+// ─── 综合记忆上下文：汇聚用户所有数据，让 AI 拥有完整记忆 ──────────────────
+function buildMemoryContext() {
+  const sections = [];
+
+  // ── 1. 基础档案 ──
   const p = state.userProfile;
-  if (!p) return '';
-  const parts = [];
-  if (p.nickname) parts.push('昵称：' + p.nickname);
-  if (p.age) parts.push('年龄：' + p.age);
-  if (p.gender) parts.push('性别：' + p.gender);
-  if (p.grade) parts.push('年级：' + p.grade);
-  if (p.major) parts.push('专业：' + p.major);
-  if (p.concerns && p.concerns.length) parts.push('关注议题：' + p.concerns.join('、'));
-  if (p.bio) parts.push('个性签名：' + p.bio);
-  if (p.testHistory && p.testHistory.length > 0) {
-    const recent = p.testHistory.slice(-3).map(t =>
-      t.date + ' ' + t.testName + ': ' + t.resultTitle + '(' + (t.resultTag||'') + ')'
-    ).join('；');
-    parts.push('最近测试：' + recent);
+  if (p) {
+    const profileParts = [];
+    if (p.nickname) profileParts.push('昵称：' + p.nickname);
+    if (p.age) profileParts.push('年龄：' + p.age);
+    if (p.gender) profileParts.push('性别：' + p.gender);
+    if (p.grade) profileParts.push('年级：' + p.grade);
+    if (p.major) profileParts.push('专业：' + p.major);
+    if (p.concerns && p.concerns.length) profileParts.push('关注议题：' + p.concerns.join('、'));
+    if (p.bio) profileParts.push('个性签名：' + p.bio);
+    if (profileParts.length) sections.push('【基本信息】\n' + profileParts.join('\n'));
   }
-  return parts.length ? '\n\n【用户档案】\n' + parts.join('\n') + '\n（请结合以上信息进行个性化回应，自然地参考对方的测试结果和关注议题）' : '';
+
+  // ── 2. 测试历史（全部，含结果描述）──
+  if (p && p.testHistory && p.testHistory.length > 0) {
+    const tests = p.testHistory.map(t => {
+      let line = `${t.date} ${t.testName}：${t.resultTitle}`;
+      if (t.resultTag) line += `（${t.resultTag}）`;
+      if (t.resultDesc) line += `\n  结果描述：${t.resultDesc.slice(0,120)}`;
+      return line;
+    }).join('\n');
+    sections.push(`【心理测试历史】（共${p.testHistory.length}次）\n${tests}`);
+  }
+
+  // ── 3. 情绪日记与趋势分析 ──
+  const diaries = state.moodDiaries || [];
+  if (diaries.length > 0) {
+    const recent = diaries.slice(0, 14); // 最近14天
+    const lines = recent.map(d => {
+      const sc = d.mood?.sc || 3;
+      const moodLabel = d.mood?.lb || '未知';
+      let line = `${d.date} 心情：${moodLabel}(${sc}/5)`;
+      if (d.note) line += `，日记：「${d.note.slice(0,80)}」`;
+      return line;
+    }).join('\n');
+
+    // 趋势分析
+    const scores = recent.map(d => d.mood?.sc || 3);
+    const avg = (scores.reduce((a,b)=>a+b,0) / scores.length).toFixed(1);
+    const trend = scores.length >= 2
+      ? (scores[0] > scores[scores.length-1] ? '下降趋势' : scores[0] < scores[scores.length-1] ? '上升趋势' : '平稳')
+      : '数据不足';
+    const moodStreak = (loadAchievements().moodStreak) || 0;
+    sections.push(`【情绪记录】（最近${recent.length}天，平均心情${avg}/5，趋势：${trend}，连续记录${moodStreak}天）\n${lines}`);
+  }
+
+  // ── 4. 感恩日记 ──
+  const grat = state.gratSaved || [];
+  if (grat.length > 0) {
+    const gratLines = grat.slice(0, 7).map(g =>
+      `${g.date}：${g.items.join('；')}`
+    ).join('\n');
+    sections.push(`【感恩日记】（共${grat.length}篇，最近7篇）\n${gratLines}`);
+  }
+
+  // ── 5. 历史对话摘要 ──
+  const chatHist = state.chatHistory || [];
+  if (chatHist.length > 0) {
+    const summaries = chatHist.slice(-8).map((s, i) => {
+      const userMsgs = s.msgs.filter(m => m.role === 'user');
+      if (!userMsgs.length) return null;
+      const topics = userMsgs.slice(0, 3).map(m => m.text.slice(0, 60)).join(' → ');
+      return `${s.time || ''}对话${chatHist.length - i}：${topics}`;
+    }).filter(Boolean);
+    if (summaries.length) {
+      sections.push(`【历史对话记录】（共${chatHist.length}段，最近${summaries.length}段摘要）\n${summaries.join('\n')}`);
+    }
+  }
+
+  // ── 6. 成长成就 ──
+  const ach = loadAchievements();
+  const achParts = [];
+  if (ach.points) achParts.push(`成长积分：${ach.points}`);
+  const tree = getTreeStage();
+  achParts.push(`成长阶段：${tree.label}（${tree.hint}）`);
+  if (ach.badges && ach.badges.length) {
+    const badgeNames = ach.badges.map(id => (BADGES.find(b=>b.id===id)||{}).name).filter(Boolean);
+    if (badgeNames.length) achParts.push(`已获徽章：${badgeNames.join('、')}`);
+  }
+  // 知识阅读统计
+  const knowledgeCount = (ach.events||[]).filter(e=>e.type==='knowledge').length;
+  if (knowledgeCount > 0) achParts.push(`已阅读科普文章：${knowledgeCount}篇`);
+  // 呼吸练习统计
+  const breatheCount = (ach.events||[]).filter(e=>e.type==='breathe').length;
+  if (breatheCount > 0) achParts.push(`完成呼吸练习：${breatheCount}次`);
+  if (achParts.length) sections.push(`【成长数据】\n${achParts.join('；')}`);
+
+  if (!sections.length) return '';
+  return '\n\n══════ 用户记忆档案（AI 应主动参考以下信息进行个性化回应）══════\n\n' +
+    sections.join('\n\n') +
+    '\n\n══════ 记忆使用指引 ══════\n' +
+    '1. 你拥有以上用户的完整记忆。在对话中，应自然地参考这些信息，让对方感受到你记得他/她。\n' +
+    '2. 如果对方提到的话题与过去的测试结果、情绪记录、日记内容相关，主动关联并提及。\n' +
+    '3. 关注情绪趋势变化：如果近期心情持续走低，温和地表达关心；如果趋势上升，给予肯定。\n' +
+    '4. 参考历史对话中的话题，避免重复建议，体现"我记得你上次说过…"的连续性。\n' +
+    '5. 感恩日记内容可用于积极心理学的介入：强化已有的正向关注。\n' +
+    '6. 但不要生硬地罗列数据，而是像老朋友一样自然地融入对话。';
 }
 
 function setState(patch) {
@@ -724,30 +830,8 @@ if(!localStorage.getItem('lx_onboarded')) {
 // ─── QUIZ DATA ────────────────────────────────────────────────────────────────
 const QUIZZES = [
   {id:"mbti",ic:"🌈",title:"MBTI 性格",count:"60题",time:"约25分钟",color:"#E8A030",free:true,
-   questions:[
-    {q:"在社交场合，你通常会…",opts:["精力充沛，享受与大家互动","还好，随遇而安","有些疲惫，更享受事后独处","很累，需要大量独处恢复"]},
-    {q:"面对一个全新的想法，你更倾向于…",opts:["兴奋地立刻告诉别人","先在脑子里反复琢磨","寻找它的实际可行性","分析它的逻辑是否自洽"]},
-    {q:"你做决定时，更依赖…",opts:["当下的直觉和感受","过去积累的经验","对逻辑规律的分析","对他人感受的考量"]},
-    {q:"与朋友发生分歧，你会…",opts:["直接说出自己的判断","先照顾对方的情绪再说","内心纠结但保持沉默","顺着对方，内心让步"]},
-    {q:"你对「计划」的态度是…",opts:["喜欢详细计划，讨厌变动","大方向规划，细节灵活","能不计划就不计划","觉得计划总赶不上变化"]},
-    {q:"当你需要恢复精力时，你会选择…",opts:["约朋友出去、参加聚会","和一两个亲近的人叙旧","独自待着、看书或发呆","做手工/运动等专注性活动"]},
-    {q:"朋友眼中，你更像是…",opts:["充满活力、带动气氛的那个","温暖可靠、默默支持的那个","思考深刻、独立特行的那个","冷静理性、分析问题的那个"]},
-    {q:"面对「规则」，你通常…",opts:["觉得规则就是用来遵守的","能理解规则，但会质疑不合理处","喜欢探索规则背后的逻辑","觉得规则限制了创造力"]},
-    {q:"你更享受哪种工作方式？",opts:["多人协作，热闹讨论","小团队，深度沟通","独立完成，自己节奏","系统性推进，有明确目标"]},
-    {q:"遇到冲突，你优先考虑…",opts:["维护关系和谐","坚守自己的原则","分析谁对谁错","找到对大家都好的方案"]},
-    {q:"你更容易被哪种内容吸引？",opts:["感人的故事和情感共鸣","实用的方法和操作指南","深刻的哲学和思想探讨","新鲜的概念和未来趋势"]},
-    {q:"对于「未来」，你通常…",opts:["充满期待，主动规划","顺其自然，走一步看一步","不断探索各种可能性","担忧风险，倾向稳妥"]},
-    {q:"做完一件事，你更在意…",opts:["完成时的成就感和反馈","过程中有没有帮到别人","自己是否达到了内心标准","结果是否合乎逻辑预期"]},
-    {q:"对陌生环境，你的第一反应是…",opts:["好奇，主动探索和交流","谨慎，先观察再行动","不适应，需要时间调整","分析环境，评估利弊"]},
-    {q:"你认为最重要的品质是…",opts:["热情与感染力","忠诚与可靠","创造与独特","理性与智慧"]},
-    {q:"深夜独处时，你最常做的是…",opts:["刷社交媒体或和朋友聊天","回忆今天发生的事和感受","天马行空地想各种问题","整理思路或规划明天"]},
-   ],
-   results:[
-    {range:[0,10],title:"内省探索型 🌙",tag:"INFP / INTJ 风格",desc:"你拥有丰富的内心世界，思考深邃细腻。独处是充电而非孤独，你有强烈的自我价值观，对真实和意义有天然的追求，在深度关系中才真正绽放。"},
-    {range:[11,24],title:"平衡适应型 🌿",tag:"ISFJ / ENFJ 风格",desc:"你兼具感性与理性，能灵活切换社交与独处模式。你关注他人感受，重视关系的维护，是团队中的润滑剂，也是身边人信赖的精神支柱。"},
-    {range:[25,36],title:"务实行动型 🌻",tag:"ESTJ / ISTJ 风格",desc:"你重视现实、效率和秩序。有强烈的责任感，言出必行，擅长把事情落实到位。你的可靠性让周围的人感到安心。"},
-    {range:[37,48],title:"活力连接型 ☀️",tag:"ENFP / ENTJ 风格",desc:"你充满活力与感染力，享受与人连接的过程，思维开阔，善于激励他人。你是天然的领导者和创意者，能让整个团队充满能量。"},
-   ]},
+   get questions(){ return MBTI_FULL_QUESTIONS; },
+   results:[]},
   {id:"stress",ic:"🌊",title:"压力自测",count:"12题",time:"约5分钟",color:"#4A8A70",free:true,
    questions:[
     {q:"最近一周，你的睡眠质量如何？",opts:["很好，睡得很香","还行，偶尔难入睡","时好时坏，不稳定","很差，经常失眠或早醒"]},
@@ -810,7 +894,7 @@ const QUIZZES = [
    ]},
 ];
 const ALL_QUIZZES = [
-  {ic:"💕",title:"恋爱依恋类型测试",desc:"了解你在亲密关系中的模式",cnt:"1.2万人测过",
+  {ic:"💕",title:"恋爱依恋类型测试",desc:"了解你在亲密关系中的模式",cnt:"9.6万人测过",
    questions:[
     {q:"当伴侣没有及时回复消息时，你会…",opts:["稍微担心但不影响心情","忍不住反复看手机","觉得无所谓，他/她有自己的事","开始想是不是自己做错了什么"]},
     {q:"在亲密关系中，你最害怕的是…",opts:["被遗弃或抛弃","失去自我和个人空间","依赖对方后受到伤害","关系变得无聊平淡"]},
@@ -826,7 +910,7 @@ const ALL_QUIZZES = [
     {range:[8,15],title:"焦虑型依恋 🌊",tag:"渴望亲密，容易担忧",desc:"你渴望亲密和情感确认，容易因担心被遗弃而产生焦虑。增强自我价值感、培养独立的兴趣爱好，是改善这一模式的关键。"},
     {range:[16,24],title:"回避型依恋 🌙",tag:"独立保护型",desc:"你倾向于独立和保持情感距离，这往往源于早期的自我保护机制。慢慢练习表达需求、允许自己依赖他人，关系会更滋养你。"},
    ]},
-  {ic:"😰",title:"焦虑自评 GAD-7",desc:"专业焦虑程度评估工具",cnt:"8.7千人测过",
+  {ic:"😰",title:"焦虑自评 GAD-7",desc:"专业焦虑程度评估工具",cnt:"28.9万人测过",
    questions:[
     {q:"过去两周，感到紧张、焦虑或烦躁？",opts:["完全没有（0分）","有几天（1分）","超过一周（2分）","几乎每天（3分）"]},
     {q:"过去两周，无法停止或控制担忧？",opts:["完全没有（0分）","有几天（1分）","超过一周（2分）","几乎每天（3分）"]},
@@ -842,7 +926,7 @@ const ALL_QUIZZES = [
     {range:[10,14],title:"中度焦虑，建议关注 💙",tag:"GAD-7：10-14分",desc:"焦虑程度达到中度，已对日常生活产生影响。建议认真考虑与心理咨询师交流，学习更系统的情绪调节方法。"},
     {range:[15,21],title:"重度焦虑，请寻求帮助 🌿",tag:"GAD-7：15分以上",desc:"你的焦虑程度较重，请认真对待。建议尽快联系学校心理咨询中心，或拨打 12356 心理援助热线，你值得获得支持。"},
    ]},
-  {ic:"😴",title:"睡眠质量自测",desc:"Pittsburgh睡眠质量指数",cnt:"6.3千人测过",
+  {ic:"😴",title:"睡眠质量自测",desc:"Pittsburgh睡眠质量指数",cnt:"6.8万人测过",
    questions:[
     {q:"过去一个月，你通常几点才能真正入睡？",opts:["23点前","23点-0点","0点-1点","1点以后"]},
     {q:"从躺下到真正入睡，通常需要多久？",opts:["不到15分钟","15-30分钟","30-60分钟","超过1小时"]},
@@ -860,7 +944,7 @@ const ALL_QUIZZES = [
     {range:[7,13],title:"睡眠有待改善 🌤️",tag:"PSQI：7-13分，一般",desc:"睡眠质量存在一些问题，建议减少睡前刺激，固定起床时间，尝试睡前冥想或呼吸放松练习。"},
     {range:[14,21],title:"睡眠问题需认真关注 💙",tag:"PSQI：14分以上，较差",desc:"你的睡眠问题较明显，长期睡眠不足会影响情绪、记忆和学习。建议咨询医生或心理咨询师，寻求专业的睡眠改善方案。"},
    ]},
-  {ic:"🌱",title:"心理韧性测试",desc:"看看你的内心有多强大",cnt:"4.1千人测过",
+  {ic:"🌱",title:"心理韧性测试",desc:"看看你的内心有多强大",cnt:"4.2万人测过",
    questions:[
     {q:"面对挫折和失败，你通常的反应是…",opts:["很快调整，把它当成学习机会","需要一段时间消化，但能恢复","很难走出来，影响很久","几乎无法面对，会长期回避"]},
     {q:"当事情超出你的控制时，你会…",opts:["接受现实，专注可控的部分","感到焦虑，但会努力应对","感到无助，不知所措","陷入悲观，觉得没有希望"]},
@@ -878,7 +962,7 @@ const ALL_QUIZZES = [
    ]},
 
   // ── 罗森伯格自尊量表 (Rosenberg Self-Esteem Scale) ──
-  {ic:"⭐",title:"罗森伯格自尊量表",desc:"Rosenberg Self-Esteem Scale · 专业自尊评估",cnt:"国际通用量表",
+  {ic:"⭐",title:"罗森伯格自尊量表",desc:"Rosenberg Self-Esteem Scale · 专业自尊评估",cnt:"3.1万人测过",
    questions:[
     {q:"我觉得自己是有价值的人，至少与别人不相上下。",opts:["非常同意（3分）","同意（2分）","不同意（1分）","非常不同意（0分）"]},
     {q:"我觉得自己有很多好的品质。",opts:["非常同意（3分）","同意（2分）","不同意（1分）","非常不同意（0分）"]},
@@ -899,7 +983,7 @@ const ALL_QUIZZES = [
    ]},
 
   // ── 大五人格测试 (Big Five / BFI-44) ──
-  {ic:"🧬",title:"大五人格测试（OCEAN）",desc:"Big Five Inventory · 44题完整版",cnt:"国际通用量表",id:'bigfive',
+  {ic:"🧬",title:"大五人格测试（OCEAN）",desc:"Big Five Inventory · 44题完整版",cnt:"58.2万人测过",id:'bigfive',
    questions:[
     {q:"我是一个健谈的人。",opts:["非常不同意","不太同意","中立","比较同意","非常同意"],dim:'E'},
     {q:"我倾向于找别人的缺点。",opts:["非常不同意","不太同意","中立","比较同意","非常同意"],dim:'A',rev:true},
@@ -949,7 +1033,7 @@ const ALL_QUIZZES = [
    results:[{type:'bigfive'}]},
 
   // ── 霍兰德职业兴趣测试 (Holland RIASEC) ──
-  {ic:"🧭",title:"霍兰德职业兴趣测试",desc:"Holland RIASEC · 48题完整版",cnt:"国际通用量表",id:'holland',
+  {ic:"🧭",title:"霍兰德职业兴趣测试",desc:"Holland RIASEC · 48题完整版",cnt:"43.7万人测过",id:'holland',
    questions:[
     {q:"修理或组装电器、家具一类的东西。",opts:["很喜欢","比较喜欢","不太喜欢","不喜欢"],dim:'R'},
     {q:"阅读科学文章或观看科技纪录片。",opts:["很喜欢","比较喜欢","不太喜欢","不喜欢"],dim:'I'},
@@ -1003,7 +1087,7 @@ const ALL_QUIZZES = [
    results:[{type:'holland'}]},
 
   // ── 卡特尔16PF人格测试（简版48题，3题/因素）──
-  {ic:"🔬",title:"卡特尔16PF人格测试",desc:"Cattell 16PF · 48题简版",cnt:"国际通用量表",id:'16pf',
+  {ic:"🔬",title:"卡特尔16PF人格测试",desc:"Cattell 16PF · 48题简版",cnt:"18.5万人测过",id:'16pf',
    questions:[
     // A: 乐群性 (Warmth)
     {q:"我更愿意…",opts:["和很多人在一起","和一两个好友相处"],dim:'A'},
@@ -1132,7 +1216,7 @@ const MBTI_FULL_QUESTIONS = [
   // 补充题目（凑齐60题）
   // E/I 补充 (3题)
   {q:"被人突然叫到台前发言，你的第一反应是…",opts:["有点兴奋，挺好的","有点紧张，但能应对","明显不自在，需要准备","非常抵触，宁愿不去"]},
-  {q:"你在群聊里通常是…",opts:["活跃发言，带动气氛","有话说就说，没话说就看","基本潜水，偶尔回复","几乎不发，能退群就退"]},
+  {q:"在多人讨论中，你通常是…",opts:["活跃发言，带动气氛","有话说就说，没话说就看","基本潜水，偶尔回复","几乎不发，能不参加就不参加"]},
   {q:"一段长时间的独处结束后，你感觉…",opts:["有点无聊，想找人聊","还好，但也想见见人了","充好电了，状态不错","非常舒适，还想再久一点"]},
   // S/N 补充 (4题)
   {q:"你更相信哪种判断方式？",opts:["眼见为实，亲身验证过的","有据可查的数据和案例","内心的直觉和感知","逻辑推演和理论框架"]},
@@ -1226,62 +1310,6 @@ function getDailyContent() {
   return {quote, mindful, grad, dateStr: now.toLocaleDateString('zh-CN',{month:'long',day:'numeric',weekday:'short'})};
 }
 
-// ─── CHAT DATA ────────────────────────────────────────────────────────────────
-const COMPANIONS = [
-  // 学业压力
-  {name:"阿橙",grade:"大三",av:"🌸",cat:"学业压力",tags:["学业压力","考研焦虑"],quote:"有时觉得自己不够努力，但又不知道从哪里使劲…"},
-  {name:"晨雾",grade:"大一",av:"🌙",cat:"学业压力",tags:["适应困难","学业压力"],quote:"课程太难了，感觉自己完全跟不上节奏…"},
-  {name:"咖啡因过敏",grade:"大三",av:"☕",cat:"学业压力",tags:["GPA焦虑","学业压力"],quote:"绩点不高，担心找不到好工作，睡前反复担心…"},
-  {name:"三更灯火",grade:"大二",av:"📚",cat:"学业压力",tags:["期末焦虑","挂科风险"],quote:"这学期好几门课都没跟上，感觉要挂科了很慌…"},
-  {name:"早起的鸟",grade:"大四",av:"🐦",cat:"学业压力",tags:["毕业论文","deadline恐惧"],quote:"论文开题都不会写，感觉自己根本不适合做学术…"},
-  // 情感困惑
-  {name:"小熊软糖",grade:"大二",av:"🍀",cat:"情感困惑",tags:["暗恋","情感困惑"],quote:"喜欢一个人但不知道要不要表白，每天都很纠结…"},
-  {name:"夜航船",grade:"大二",av:"🚢",cat:"情感困惑",tags:["分手","情感困惑"],quote:"刚分手，感觉很多事情都没有意义了…"},
-  {name:"粉红泡泡",grade:"大一",av:"💕",cat:"情感困惑",tags:["异地恋","信任问题"],quote:"异地恋快撑不下去了，但又舍不得放弃…"},
-  {name:"柠檬水",grade:"大三",av:"🍋",cat:"情感困惑",tags:["被冷落","关系维护"],quote:"和男/女朋友越来越少话说，不知道怎么了…"},
-  {name:"落叶归根",grade:"大四",av:"🍂",cat:"情感困惑",tags:["毕业分离","感情抉择"],quote:"毕业了要分开，不知道这段感情还要不要继续…"},
-  // 人际关系
-  {name:"海边的风",grade:"大二",av:"🌱",cat:"人际关系",tags:["孤独感","人际关系"],quote:"在人群中感到孤独，不知道这正不正常…"},
-  {name:"格子间的风",grade:"研二",av:"🌿",cat:"人际关系",tags:["导师关系","人际关系"],quote:"和导师关系很紧张，不知道该怎么沟通…"},
-  {name:"小透明",grade:"大一",av:"🫧",cat:"人际关系",tags:["社交恐惧","融入困难"],quote:"宿舍其他人玩得很好，感觉只有我格格不入…"},
-  {name:"破冰人",grade:"大三",av:"🧊",cat:"人际关系",tags:["室友矛盾","宿舍关系"],quote:"和室友闹矛盾了，每天待在宿舍都很压抑…"},
-  {name:"玻璃心",grade:"大二",av:"💭",cat:"人际关系",tags:["被孤立","社交敏感"],quote:"感觉朋友圈子里有人针对我，但又说不清楚…"},
-  // 迷茫焦虑
-  {name:"小鹿同学",grade:"研一",av:"🌊",cat:"迷茫焦虑",tags:["迷茫","职业规划"],quote:"研究生第一年，感觉找不到方向…"},
-  {name:"雨后青山",grade:"大四",av:"🌻",cat:"迷茫焦虑",tags:["考研or工作","迷茫焦虑"],quote:"大四了，面对考研还是工作的选择，感觉快崩了…"},
-  {name:"向日葵",grade:"大一",av:"🌼",cat:"迷茫焦虑",tags:["专业迷茫","未来焦虑"],quote:"对自己的专业完全没有兴趣，不知道坚持还是转专业…"},
-  {name:"风中蒲公英",grade:"大三",av:"🌬️",cat:"迷茫焦虑",tags:["就业焦虑","自我怀疑"],quote:"看到同学们都在实习、比赛，感觉自己一无是处…"},
-  {name:"夜空旅人",grade:"研三",av:"⭐",cat:"迷茫焦虑",tags:["毕业去向","博士or工作"],quote:"快毕业了还不知道要去哪，感觉人生一片茫然…"},
-];
-const GROUPS = [
-  {ic:"😰",name:"焦虑互助营",cnt:"312人",act:"昨天有人分享了呼吸法",tag:"活跃",tc:"#E8A030",
-   desc:"每天分享一个缓解焦虑的小技巧，互相打卡鼓励。今天的主题：4-7-8呼吸法实测…",
-   msgs:[{u:"阿橙",av:"🌸",t:"今天试了4-7-8呼吸法，真的平静了不少！"},{u:"系统",av:"🌿",t:"今日打卡主题：4-7-8呼吸法实测 ✨"},{u:"晨雾",av:"🌙",t:"我也在用，睡前做三组效果很好"},{u:"海边的风",av:"🌱",t:"分享一下：焦虑来临时先停下手头的事，喝口水"}]},
-  {ic:"📖",name:"考研加油站",cnt:"208人",act:"每日打卡中",tag:"推荐",tc:"#4A8870",
-   desc:"考研路上不孤单，大家一起打卡学习，分享备考经验和心路历程…",
-   msgs:[{u:"雨后青山",av:"🌻",t:"今天复习了高数第三章，打卡✅"},{u:"系统",av:"🌿",t:"今日已有48人完成学习打卡 📚"},{u:"咖啡因过敏",av:"☕",t:"英语单词Day 120，坚持就是胜利！"},{u:"小鹿同学",av:"🌊",t:"大家推荐一下政治资料？"}]},
-  {ic:"🌙",name:"深夜倾诉室",cnt:"156人",act:"夜晚最活跃",tag:"夜晚",tc:"#7A6888",
-   desc:"失眠的夜晚，说说心里话。不被评判，只有倾听和陪伴…",
-   msgs:[{u:"夜航船",av:"🚢",t:"又是睡不着的夜晚，感觉很空"},{u:"系统",av:"🌿",t:"深夜倾诉室开启 🌙 这里永远有人陪"},{u:"向日葵",av:"🌼",t:"抱抱，我也在，你不是一个人"},{u:"晨雾",av:"🌙",t:"凌晨的孤独感特别强，但这里感觉好多了"}]},
-  {ic:"🌱",name:"走出迷茫小屋",cnt:"97人",act:"成长型群组",tag:"成长",tc:"#4A7A60",
-   desc:"聚集一批对未来感到迷茫的同学，一起探索方向，彼此激励…",
-   msgs:[{u:"格子间的风",av:"🌿",t:"今天鼓起勇气和导师谈了，虽然紧张但感觉好多了"},{u:"系统",av:"🌿",t:"本周成长分享：你迈出的每一步都算数 🌱"},{u:"小熊软糖",av:"🍀",t:"我决定去旁听一门感兴趣的课，先试试"},{u:"雨后青山",av:"🌻",t:"不知道方向很正常，慢慢来，大家一起"}]},
-  {ic:"💕",name:"感情树洞",cnt:"143人",act:"全天候在线",tag:"温暖",tc:"#C07888",
-   desc:"聊聊感情里的那些事，暗恋、失恋、异地、争吵……这里只有理解和陪伴，没有评判…",
-   msgs:[{u:"粉红泡泡",av:"💕",t:"今天和他吵架了，心里好难受"},{u:"系统",av:"🌿",t:"感情树洞开放中 💕 说出来会好一点"},{u:"柠檬水",av:"🍋",t:"抱抱，我也经历过，慢慢会好的"},{u:"小熊软糖",av:"🍀",t:"有时候争吵也是关系进步的机会，加油"}]},
-  {ic:"🏠",name:"宿舍关系修复室",cnt:"89人",act:"每周三主题讨论",tag:"互助",tc:"#7A8870",
-   desc:"宿舍里的磨合、矛盾、冷战……这里分享相处小妙招，共同营造温暖的生活空间…",
-   msgs:[{u:"破冰人",av:"🧊",t:"分享一个和室友和解的方法：从一起点外卖开始"},{u:"系统",av:"🌿",t:"本周话题：如何和不同作息的室友共处 🏠"},{u:"小透明",av:"🫧",t:"我用这个方法真的和室友关系好多了！"},{u:"海边的风",av:"🌱",t:"室友关系修复了，宿舍氛围好多了，开心"}]},
-  {ic:"💼",name:"就业情报站",cnt:"267人",act:"每日分享招聘信息",tag:"实用",tc:"#5A7A8A",
-   desc:"分享实习、秋招、春招信息，交流简历面经，一起把握机会…",
-   msgs:[{u:"风中蒲公英",av:"🌬️",t:"字节跳动暑期实习开始投了！大家冲"},{u:"系统",av:"🌿",t:"每日推送：今日开放岗位汇总 💼"},{u:"早起的鸟",av:"🐦",t:"分享一个让HR眼前一亮的简历模板"},{u:"夜空旅人",av:"⭐",t:"面试经验帖：如何回答「你的缺点是什么」"}]},
-  {ic:"🧘",name:"正念减压圈",cnt:"178人",act:"每日早8点打卡",tag:"养生",tc:"#6A8870",
-   desc:"一起做正念冥想、运动打卡、睡眠记录，在忙碌中找到内心的宁静…",
-   msgs:[{u:"早起的鸟",av:"🐦",t:"今天早起冥想10分钟，一天都很平静"},{u:"系统",av:"🌿",t:"今日早安打卡 🧘 已有32人完成晨间正念"},{u:"阿橙",av:"🌸",t:"冥想配上4-7-8呼吸，效果真的翻倍"},{u:"晨雾",av:"🌙",t:"跑步+冥想组合，这周睡眠质量好多了"}]},
-  {ic:"🎨",name:"解压创作角",cnt:"134人",act:"随时分享作品",tag:"创意",tc:"#8A6870",
-   desc:"用画画、写字、拍照、写诗……任何创作方式表达情绪，在创作中疗愈自己…",
-   msgs:[{u:"落叶归根",av:"🍂",t:"心情不好时画了幅画，感觉好多了，分享一下"},{u:"系统",av:"🌿",t:"本周创作主题：用颜色描述你现在的心情 🎨"},{u:"玻璃心",av:"💭",t:"第一次写诗，写出了好多没说出口的话"},{u:"小透明",av:"🫧",t:"涂鸦真的好解压！强烈推荐大家试试"}]},
-];
 // ═══════════════════════════════════════════════════════════════════
 // 对话引擎：多关键词权重匹配 + 上下文感知 + 丰富话术库
 // ═══════════════════════════════════════════════════════════════════
@@ -1959,11 +1987,7 @@ function buildQuizGrid() {
     c.classList.add('card-enter');
     c.onclick = () => {
       if(!q.free||!q.questions.length) return;
-      if(q.id==='mbti'){
-        setState({quizActive:createMbtiFullVersion(),quizStep:0,quizAns:{},quizResult:null});
-      } else {
-        setState({quizActive:q,quizStep:0,quizAns:{},quizResult:null});
-      }
+      setState({quizActive:q,quizStep:0,quizAns:{},quizResult:null});
     };
     c.appendChild(h('div',{style:{fontSize:'28px',marginBottom:'8px'}},q.ic));
     c.appendChild(h('div',{style:{fontWeight:'700',fontSize:'14px',color:C.txt}},q.title));
@@ -1974,6 +1998,130 @@ function buildQuizGrid() {
     grid.appendChild(c);
   });
   return grid;
+}
+
+// ── MBTI 结果渲染 ──
+function renderMbtiResult() {
+  const { quizResult } = state;
+  const scores = quizResult.dimScores || {};
+  const type = quizResult.mbtiType || '????';
+  const ti = MBTI_TYPES[type] || {emoji:'🌈',name:'未知',desc:''};
+  const wrap = h('div',{class:'page'});
+
+  // ── 结果头部 ──
+  const res = h('div',{class:'g-purple',style:{borderRadius:'20px',padding:'28px 24px',textAlign:'center',marginBottom:'16px'}});
+  res.appendChild(h('div',{style:{fontSize:'48px',marginBottom:'8px'}},ti.emoji));
+  res.appendChild(h('div',{style:{fontSize:'28px',fontWeight:'900',color:'#fff',letterSpacing:'4px',marginBottom:'4px'}},type));
+  res.appendChild(h('h2',{style:{color:'#fff',fontWeight:'800',fontSize:'20px',margin:'0 0 12px'}},ti.name));
+  res.appendChild(h('p',{style:{color:'rgba(255,255,255,.9)',lineHeight:'1.8',fontSize:'14px',margin:'0',padding:'0 8px'}},ti.desc));
+  wrap.appendChild(res);
+
+  // ── 维度得分 ──
+  const dimDefs = [
+    {pair:['E','I'],label:'外向(E) vs 内向(I)',left:'外向',right:'内向',leftDesc:'从社交获取能量',rightDesc:'从独处获取能量'},
+    {pair:['S','N'],label:'感觉(S) vs 直觉(N)',left:'感觉',right:'直觉',leftDesc:'关注具体事实',rightDesc:'关注可能未来'},
+    {pair:['T','F'],label:'思考(T) vs 情感(F)',left:'思考',right:'直觉',right:'情感',leftDesc:'逻辑分析决策',rightDesc:'价值感受决策'},
+    {pair:['J','P'],label:'判断(J) vs 知觉(P)',left:'判断',right:'知觉',leftDesc:'计划有序执行',rightDesc:'灵活随机应变'},
+  ];
+
+  dimDefs.forEach(d => {
+    const lv = scores[d.pair[0]] || 0;
+    const rv = scores[d.pair[1]] || 0;
+    const total = lv + rv || 1;
+    const lpct = Math.round(lv / total * 100);
+    const rpct = 100 - lpct;
+    const winner = lpct >= rpct ? 0 : 1;
+    const barEl = h('div',{style:{marginBottom:'14px'}});
+    barEl.appendChild(h('div',{style:{display:'flex',justifyContent:'space-between',fontSize:'12px',fontWeight:'700',marginBottom:'4px',color:C.txt}},
+      d.label));
+    const barRow = h('div',{style:{display:'flex',alignItems:'center',gap:'8px'}});
+    barRow.appendChild(h('span',{style:{width:'50px',textAlign:'center',fontSize:'13px',fontWeight:winner===0?'800':'500',color:winner===0?C.brown:C.sub}},d.left+' '+lpct+'%'));
+    const barBg = h('div',{style:{flex:'1',height:'8px',borderRadius:'4px',background:C.bg,overflow:'hidden',display:'flex'}});
+    const leftBar = h('div',{style:{width:lpct+'%',background:winner===0?C.brown:'#8090A0',borderRadius:'4px 0 0 4px',transition:'width .5s'}});
+    const rightBar = h('div',{style:{width:rpct+'%',background:winner===1?C.brown:'#8090A0',borderRadius:'0 4px 4px 0',transition:'width .5s'}});
+    barBg.appendChild(leftBar);
+    barBg.appendChild(rightBar);
+    barRow.appendChild(barBg);
+    barRow.appendChild(h('span',{style:{width:'50px',textAlign:'center',fontSize:'13px',fontWeight:winner===1?'800':'500',color:winner===1?C.brown:C.sub}},rv+'% '+d.right));
+    barEl.appendChild(barRow);
+    barEl.appendChild(h('div',{style:{fontSize:'10px',color:C.light,marginTop:'2px',textAlign:'center'}},d.leftDesc+' · '+d.rightDesc));
+    wrap.appendChild(barEl);
+  });
+
+  // ── 维度组合说明 ──
+  const note = card({padding:'14px',marginBottom:'16px',textAlign:'center'});
+  note.appendChild(h('p',{style:{margin:'0',fontSize:'12px',color:C.sub,lineHeight:'1.7'}},
+    '🌿 MBTI 是了解自己的一种方式，不是标签或限制。每个人都是独特的，类型只反映自然的倾向偏好。'));
+  wrap.appendChild(note);
+
+  // ── 生成结果卡片 ──
+  const shareCard = card({padding:'16px',marginBottom:'12px'});
+  shareCard.appendChild(h('div',{style:{fontWeight:'700',fontSize:'14px',color:C.txt,marginBottom:'12px'}},'📸 生成结果卡片'));
+  shareCard.appendChild(h('div',{style:{fontSize:'12px',color:C.sub,marginBottom:'12px'}},'生成精美卡片，截图保存或分享给朋友 ✨'));
+  const cardCanvas = h('canvas',{id:'result-card-canvas',width:'600',height:'400',style:{display:'none'}});
+  shareCard.appendChild(cardCanvas);
+  const preview = h('div',{id:'card-preview',style:{borderRadius:'14px',overflow:'hidden',marginBottom:'12px',display:'none'}});
+  const previewImg = h('img',{style:{width:'100%',display:'block'}});
+  preview.appendChild(previewImg);
+  shareCard.appendChild(preview);
+  const btnRow = h('div',{style:{display:'flex',gap:'8px'}});
+  const genBtn = btn('✨ 生成卡片',{flex:'1',padding:'12px',background:G_BROWN,color:'#fff',border:'none',borderRadius:'10px',fontSize:'13px',fontWeight:'700'},()=>{
+    const canvas = document.getElementById('result-card-canvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W=600, H=400;
+    ctx.clearRect(0,0,W,H);
+    const bg = ctx.createLinearGradient(0,0,W,H);
+    bg.addColorStop(0,'#8870A8'); bg.addColorStop(0.5,'#6858A0'); bg.addColorStop(1,'#483878');
+    ctx.fillStyle=bg; ctx.fillRect(0,0,W,H);
+    ctx.beginPath(); ctx.arc(W-60,60,120,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.06)'; ctx.fill();
+    ctx.beginPath(); ctx.arc(60,H-40,80,0,Math.PI*2);
+    ctx.fillStyle='rgba(255,255,255,0.04)'; ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.15)';
+    ctx.roundRect(32,28,90,32,[8]); ctx.fill();
+    ctx.fillStyle='#fff'; ctx.font='bold 13px PingFang SC,sans-serif';
+    ctx.textAlign='left'; ctx.fillText('✿ 聆心 LINGXIN',40,49);
+    ctx.font='56px serif'; ctx.textAlign='center';
+    ctx.fillText(ti.emoji,W/2,120);
+    ctx.fillStyle='#fff'; ctx.font='bold 42px PingFang SC,sans-serif';
+    ctx.textAlign='center'; ctx.fillText(type,W/2,175);
+    ctx.font='bold 18px PingFang SC,sans-serif';
+    ctx.fillText(ti.name,W/2,205);
+    ctx.fillStyle='rgba(255,255,255,0.85)'; ctx.font='14px PingFang SC,sans-serif';
+    const maxW=480, lineH=22;
+    let words=ti.desc, lines=[], cur='';
+    for(let i=0;i<words.length;i++){
+      cur+=words[i];
+      if(ctx.measureText(cur).width>maxW||i===words.length-1){ lines.push(cur); cur=''; }
+    }
+    lines.slice(0,3).forEach((l,i)=>ctx.fillText(l,W/2,240+i*lineH));
+    ctx.strokeStyle='rgba(255,255,255,0.2)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(32,H-50); ctx.lineTo(W-32,H-50); ctx.stroke();
+    ctx.fillStyle='rgba(255,255,255,0.6)'; ctx.font='12px PingFang SC,sans-serif';
+    ctx.textAlign='left'; ctx.fillText('聆心 · 大学生情绪陪伴平台',32,H-28);
+    ctx.textAlign='right'; ctx.fillText(new Date().toLocaleDateString('zh-CN'),W-32,H-28);
+    const dataURL = canvas.toDataURL('image/png');
+    previewImg.src = dataURL;
+    preview.style.display='block';
+    dlBtn.style.display='flex';
+    dlBtn._dataURL = dataURL;
+  });
+  btnRow.appendChild(genBtn);
+  const dlBtn = btn('⬇ 保存图片',{flex:'1',padding:'12px',background:C.green,color:'#fff',border:'none',borderRadius:'10px',fontSize:'13px',fontWeight:'700',display:'none',alignItems:'center',justifyContent:'center'},()=>{
+    if(!dlBtn._dataURL) return;
+    const a=document.createElement('a');
+    a.href=dlBtn._dataURL;
+    a.download=`聆心MBTI-${type}.png`;
+    a.click();
+  });
+  btnRow.appendChild(dlBtn);
+  shareCard.appendChild(btnRow);
+  shareCard.appendChild(h('div',{style:{fontSize:'11px',color:C.light,textAlign:'center',marginTop:'8px'}},'💡 手机端可长按图片保存，电脑端点击「保存图片」下载'));
+  wrap.appendChild(shareCard);
+
+  wrap.appendChild(renderQuizResultFooter());
+  return wrap;
 }
 
 // ── Big Five 结果渲染 ──
@@ -2131,6 +2279,9 @@ function renderQuiz() {
     const wrap = h('div',{class:'page'});
 
     // ── 多维测试结果渲染 ──
+    if (quizResult.type === 'mbti') {
+      return renderMbtiResult();
+    }
     if (quizResult.type === 'bigfive') {
       return renderBigFiveResult();
     }
@@ -2257,7 +2408,7 @@ function renderQuiz() {
 
     // Back button
     const backBtn = btn('返回测试列表',{width:'100%',padding:'14px',background:C.card,color:C.brown,border:`1.5px solid ${C.brown}`,borderRadius:'14px',fontSize:'15px',fontWeight:'700'},
-      ()=>setState({quizActive:null,quizStep:0,quizAns:{},quizResult:null}));
+      ()=>{clearQuizDraft();setState({quizActive:null,quizStep:0,quizAns:{},quizResult:null});});
     wrap.appendChild(backBtn);
 
     // ── 闭环反馈：告诉 AI 结果 ──
@@ -2293,14 +2444,40 @@ function renderQuiz() {
     });
     const row = h('div',{style:{display:'flex',gap:'10px'}});
     row.appendChild(btn('上一题',{flex:'1',padding:'14px',background:C.card,color:C.txt,border:`1.5px solid ${C.border}`,borderRadius:'14px',fontSize:'15px',fontWeight:'600'},
-      ()=>quizStep>0?setState({quizStep:quizStep-1}):setState({quizActive:null,quizStep:0,quizAns:{}})));
+      ()=>quizStep>0?setState({quizStep:quizStep-1}):(clearQuizDraft(),setState({quizActive:null,quizStep:0,quizAns:{}}))));
     row.appendChild(btn('下一题 →',{flex:'2',padding:'14px',background:quizAns[quizStep]!==undefined?G_BROWN:C.border,color:'#fff',border:'none',borderRadius:'14px',fontSize:'15px',fontWeight:'700',opacity:quizAns[quizStep]===undefined?'0.6':'1'},
       ()=>{
         if(quizAns[quizStep]===undefined) return;
         if(quizStep<quizActive.questions.length-1){ setState({quizStep:quizStep+1}); }
         else {
-          // Multi-dimensional test scoring (Big Five, Holland, 16PF)
-          if (quizActive.id === 'bigfive' || quizActive.id === 'holland' || quizActive.id === '16pf') {
+          clearQuizDraft();
+          // MBTI dimension-based scoring
+          if (quizActive.id === 'mbti') {
+            const scores = {E:0,I:0,S:0,N:0,T:0,F:0,J:0,P:0};
+            quizActive.questions.forEach((q, idx) => {
+              const ans = quizAns[idx];
+              if (ans === undefined) return;
+              const dim = MBTI_DIM_MAP[idx];
+              if (!dim) return;
+              const pole1 = dim[0], pole2 = dim[1];
+              // 选项0,1偏向第一极(权重2,1)；选项2,3偏向第二极(权重1,2)
+              if (ans < 2) scores[pole1] += (ans === 0 ? 2 : 1);
+              else scores[pole2] += (ans === 3 ? 2 : 1);
+            });
+            const type = (scores.E>=scores.I?'E':'I') +
+                         (scores.S>=scores.N?'S':'N') +
+                         (scores.T>=scores.F?'T':'F') +
+                         (scores.J>=scores.P?'J':'P');
+            const ti = MBTI_TYPES[type] || MBTI_TYPES['INFP'];
+            const r = {
+              type:'mbti', mbtiType:type,
+              title: type+' '+ti.name+' '+ti.emoji,
+              tag: type+' · '+ti.name,
+              desc: ti.desc,
+              dimScores: scores
+            };
+            trackAction('quiz'); setState({quizResult:r});
+          } else if (quizActive.id === 'bigfive' || quizActive.id === 'holland' || quizActive.id === '16pf') {
             const dimScores = {};
             const dimCounts = {};
             quizActive.questions.forEach((q, idx) => {
@@ -2329,10 +2506,12 @@ function renderQuiz() {
           if (r && quizActive) {
             const prof = state.userProfile || {};
             if (!prof.testHistory) prof.testHistory = [];
-            const isMultidim = r.type === 'bigfive' || r.type === 'holland' || r.type === '16pf';
+            const isMultidim = r.type === 'bigfive' || r.type === 'holland' || r.type === '16pf' || r.type === 'mbti';
             let resultSummary = '';
             if (isMultidim && r.dimScores) {
-              if (r.type === 'bigfive') {
+              if (r.type === 'mbti') {
+                resultSummary = r.mbtiType + ' · ' + (MBTI_TYPES[r.mbtiType]?.name || '');
+              } else if (r.type === 'bigfive') {
                 const labels = {O:'开放性',C:'尽责性',E:'外向性',A:'宜人性',N:'情绪稳定性'};
                 resultSummary = Object.entries(r.dimScores).map(([k,v])=>labels[k]+':'+v).join(', ');
               } else if (r.type === 'holland') {
@@ -2356,6 +2535,12 @@ function renderQuiz() {
         }
       }));
     body.appendChild(row);
+    // ── 暂时离开按钮：保存进度，不中断测试 ──
+    body.appendChild(btn('🚪 暂时离开',{width:'100%',padding:'12px',background:'none',color:C.sub,border:`1.5px solid ${C.border}`,borderRadius:'14px',fontSize:'13px',fontWeight:'600',marginTop:'8px'},()=>{
+      saveQuizDraft();
+      const dest = state.returnTo || 'quiz';
+      setState({page:dest, quizActive:null, quizStep:0, quizAns:{}});
+    }));
     wrap.appendChild(body);
     return wrap;
   }
@@ -2363,6 +2548,34 @@ function renderQuiz() {
   const wrap = h('div',{style:{padding:'4px 0 20px'}});
   wrap.appendChild(banner('g-brown','TRENDING · 趣测馆','探索真实的你',['MBTI · 情商 · 压力自测','每一次测试都是一次自我发现'],'🏆'));
   wrap.appendChild(buildDailyCard());
+
+  // ── 继续上次测试（有未完成的草稿时显示）──
+  if (state.quizDraft) {
+    const draft = state.quizDraft;
+    const quiz = ALL_QUIZZES.find(q => q.id === draft.quizId) || QUIZZES.find(q => q.id === draft.quizId);
+    if (quiz) {
+      const totalQ = quiz.questions ? quiz.questions.length : 0;
+      const answered = Object.keys(draft.quizAns || {}).length;
+      const pct = totalQ > 0 ? Math.round(answered / totalQ * 100) : 0;
+      const draftCard = card({padding:'16px',marginBottom:'16px',border:`2px solid ${C.brown}`,background:C.brownL});
+      draftCard.appendChild(h('div',{style:{display:'flex',alignItems:'center',gap:'10px',marginBottom:'10px'}},
+        h('span',{style:{fontSize:'24px'}},'⏸️'),
+        h('div',{style:{flex:'1'}},
+          h('div',{style:{fontWeight:'700',fontSize:'14px',color:C.txt}},draft.quizTitle || quiz.title),
+          h('div',{style:{fontSize:'11px',color:C.sub,marginTop:'2px'}},`已完成 ${answered}/${totalQ} 题 · ${pct}%`)
+        )
+      ));
+      const draftBar = h('div',{style:{height:'6px',background:C.card,borderRadius:'3px',overflow:'hidden',marginBottom:'10px'}});
+      draftBar.appendChild(h('div',{style:{height:'100%',width:pct+'%',background:C.brown,borderRadius:'3px',transition:'width .3s'}}));
+      draftCard.appendChild(draftBar);
+      const draftRow = h('div',{style:{display:'flex',gap:'8px'}});
+      draftRow.appendChild(btn('▶ 继续测试',{flex:'2',padding:'12px',background:G_BROWN,color:'#fff',border:'none',borderRadius:'10px',fontSize:'13px',fontWeight:'700'},()=>resumeQuizDraft()));
+      draftRow.appendChild(btn('放弃',{flex:'1',padding:'12px',background:C.card,color:C.sub,border:`1.5px solid ${C.border}`,borderRadius:'10px',fontSize:'13px',fontWeight:'600'},()=>{clearQuizDraft();render();}));
+      draftCard.appendChild(draftRow);
+      wrap.appendChild(draftCard);
+    }
+  }
+
   wrap.appendChild(secTitle('🔥','热门测试'));
   wrap.appendChild(buildQuizGrid());
   wrap.appendChild(secTitle('📋','全部测试'));
@@ -2377,76 +2590,16 @@ function renderQuiz() {
   return wrap;
 }
 
-function renderGroupChat(group) {
-  let msgs = [...group.msgs];
-  const wrap = h('div',{style:{display:'flex',flexDirection:'column',height:'100%',background:C.bg}});
-  const hdr = h('div',{class:'top-hdr'});
-  hdr.appendChild(btn('‹',{background:'none',border:'none',fontSize:'22px',color:C.txt,padding:'0 8px 0 0'},()=>setState({activeGroup:null})));
-  hdr.appendChild(h('div',{style:{fontWeight:'700',fontSize:'16px',color:C.txt,position:'absolute',left:'50%',transform:'translateX(-50%)'}},group.name));
-  hdr.appendChild(h('div',{style:{width:'40px'}}));
-  wrap.appendChild(hdr);
-
-  const msgsDiv = h('div',{style:{flex:'1',overflowY:'auto',padding:'72px 16px 0'}});
-  msgsDiv.appendChild(h('div',{style:{background:C.card,borderRadius:'12px',padding:'8px 12px',textAlign:'center',fontSize:'12px',color:C.sub,marginBottom:'16px'}},group.cnt+' · '+group.act));
-
-  function addMsg(m) {
-    const row = h('div',{style:{display:'flex',justifyContent:m.u==='我'?'flex-end':'flex-start',marginBottom:'12px',gap:'8px'}});
-    if(m.u!=='我') {
-      const av = h('div',{class:'avatar',style:{background:C.brownL,alignSelf:'flex-end'}},m.av);
-      row.appendChild(av);
-    }
-    const col = h('div',null);
-    if(m.u!=='我') col.appendChild(h('div',{style:{fontSize:'11px',color:C.sub,marginBottom:'3px',paddingLeft:'4px'}},m.u));
-    col.appendChild(h('div',{class:`bubble ${m.u==='我'?'user':'ai'}`},m.t));
-    row.appendChild(col);
-    if(m.u==='我') {
-      row.appendChild(h('div',{class:'avatar',style:{background:'#F0D8C0',alignSelf:'flex-end'}},'👤'));
-    }
-    msgsDiv.appendChild(row);
-    msgsDiv.scrollTo({top:msgsDiv.scrollHeight,behavior:"smooth"});
-  }
-  msgs.forEach(m=>addMsg(m));
-  wrap.appendChild(msgsDiv);
-
-  const inputRow = h('div',{style:{padding:'12px 16px 16px',display:'flex',gap:'10px',background:C.card,borderTop:`1px solid ${C.border}`}});
-  const inp = h('input',{class:'chat-input',placeholder:'说点什么…'});
-  const sendBtn = btn('▶',{width:'44px',height:'44px',borderRadius:'50%',background:G_BROWN,border:'none',color:'#fff',fontSize:'18px',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:'0'},()=>{
-    const t=inp.value.trim(); if(!t) return; inp.value='';
-    const myMsg={u:'我',av:'👤',t};
-    msgs.push(myMsg); addMsg(myMsg);
-    setTimeout(()=>{
-      const reps=['抱抱你 🌸','谢谢你的分享，我们都在 💙','说得很好，共鸣了 🌿','你不孤单，大家都在这里 ✨'];
-      const rep={u:group.msgs[0].u,av:group.msgs[0].av,t:reps[Math.floor(Math.random()*reps.length)]};
-      msgs.push(rep); addMsg(rep);
-    },1000);
-  });
-  inp.onkeydown = e=>{ if(e.key==='Enter') sendBtn.onclick(); };
-  inputRow.appendChild(inp); inputRow.appendChild(sendBtn);
-  wrap.appendChild(inputRow);
-  return wrap;
-}
-
 function renderChat() {
-  const {chatTab, chatMsgs, chatInput, chatLoading, chatFilter, activeGroup} = state;
-  if(activeGroup) return renderGroupChat(activeGroup);
-  if(state.activePeer && window.innerWidth<=900) return buildPeerChatPage(state.activePeer);
+  const {chatMsgs, chatInput, chatLoading} = state;
 
   const wrap = h('div',{style:{display:'flex',flex:'1',minHeight:'0'}});
 
-  const tabs = h('div',{class:'chat-tab-bar'});
-  [['ai','🤖 AI陪伴'],['peer','🔗 同路人匹配'],['group','👥 群聊']].forEach(([id,lb])=>{
-    const tb = btn(lb,{},()=>setState({chatTab:id}));
-    if(chatTab===id) tb.className='active';
-    tabs.appendChild(tb);
-  });
-  // PC: left sidebar for tabs+peer/group list; right for AI msgs
-  const chatLeft = h('div',{class:'chat-left'});
-  chatLeft.appendChild(tabs);
-  wrap.appendChild(chatLeft);
+  // 聊天区占满整个内容宽度（移除空白的左侧栏，历史记录改为弹层式切换）
   const chatRight = h('div',{class:'chat-right'});
   wrap.appendChild(chatRight);
 
-  if(chatTab==='ai') {
+  {
     const {showHistory, chatHistory} = state;
 
     // ── 历史记录视图 ──────────────────────────────────────────────
@@ -2619,155 +2772,11 @@ function renderChat() {
     aiWrap.appendChild(inputRow);
     chatRight.appendChild(aiWrap);
     } // end else (showHistory)
-  } // end if chatTab==='ai'
-
-  if(chatTab==='peer') {
-    const scroll = h('div',{class:'chat-panel'});
-    const inner = h('div',{style:{padding:'0 16px'}});
-    inner.appendChild(banner('g-green','SOUL MATCHING · 源声solo','找到同频的人',['根据你的困扰标签，匹配有相似经历的同路人','互相倾听，彼此陪伴'],'🫂'));
-    const filterRow = h('div',{style:{display:'flex',gap:'8px',marginBottom:'14px',flexWrap:'wrap'}});
-    ['全部','学业压力','情感困惑','人际关系','迷茫焦虑'].forEach(f=>{
-      filterRow.appendChild(btn(f,{padding:'6px 14px',borderRadius:'20px',fontSize:'12px',fontWeight:'600',background:chatFilter===f?C.brown:C.card,color:chatFilter===f?'#fff':C.sub,border:`1px solid ${chatFilter===f?C.brown:C.border}`},()=>setState({chatFilter:f})));
-    });
-    inner.appendChild(filterRow);
-    const list = chatFilter==='全部'?COMPANIONS:COMPANIONS.filter(c=>c.cat===chatFilter);
-    list.forEach(c=>{
-      const el = card({padding:'16px',marginBottom:'10px',display:'flex',gap:'12px'});
-      el.appendChild(h('div',{style:{width:'46px',height:'46px',borderRadius:'50%',background:C.brownL,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'22px',flexShrink:'0'}},c.av));
-      const info = h('div',{style:{flex:'1'}});
-      info.appendChild(h('div',{style:{fontWeight:'700',fontSize:'14px',color:C.txt,marginBottom:'4px'}},c.name+' · '+c.grade));
-      const tagRow = h('div',{style:{display:'flex',gap:'6px',flexWrap:'wrap',marginBottom:'8px'}});
-      c.tags.forEach(tg=>tagRow.appendChild(h('span',{style:{padding:'2px 8px',background:C.brownL,color:C.brown,borderRadius:'6px',fontSize:'11px',fontWeight:'600'}},tg)));
-      info.appendChild(tagRow);
-      info.appendChild(h('p',{style:{margin:'0',fontSize:'12px',color:C.sub,fontStyle:'italic'}},`"${c.quote}"`));
-      el.appendChild(info);
-      const connectBtn = btn('连接',{alignSelf:'center',padding:'8px 14px',background:C.green,color:'#fff',border:'none',borderRadius:'8px',fontSize:'12px',fontWeight:'700',flexShrink:'0'},()=>{
-        state.activePeer = c;
-        // Mobile: go to peer chat page
-        if(window.innerWidth <= 900) {
-          setState({activeGroup: {isPeer:true, peer:c, msgs:[{u:'system',t:'已连接 · '+c.name+' · '+c.grade},{u:c.name,av:c.av,t:'你好，看到你的情况和我很像，很高兴认识你 😊'},{u:'system',t:'这是一个私密空间，好好聊聊吧 🌿'}]}});
-        } else {
-          if(chatRight) { chatRight.innerHTML=''; chatRight.appendChild(buildPeerChat(c)); }
-        }
-      });
-      el.appendChild(connectBtn);
-      inner.appendChild(el);
-    });
-    scroll.appendChild(inner); chatLeft.appendChild(scroll);
-    // PC right panel: 如果有 activePeer 就显示私聊，否则显示提示
-    if(state.activePeer) {
-      chatRight.appendChild(buildPeerChat(state.activePeer));
-    } else {
-      const hint = h('div',{style:{flex:'1',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:'12px',color:C.light}});
-      hint.appendChild(h('div',{style:{fontSize:'48px'}},'🫂'));
-      hint.appendChild(h('div',{style:{fontSize:'14px'}},'选择一位同路人开始连接'));
-      chatRight.appendChild(hint);
-    }
   }
 
-  if(chatTab==='group') {
-    const scroll = h('div',{class:'chat-panel'});
-    scroll.appendChild(h('p',{style:{color:C.sub,fontSize:'13px',margin:'0 0 14px'}},'加入志同道合的小组，在安全的空间里彼此陪伴，共同成长。'));
-    GROUPS.forEach(g=>{
-      const el = card({padding:'16px',marginBottom:'10px',cursor:'pointer'});
-      el.onclick = ()=>setState({activeGroup:g});
-      const top = h('div',{style:{display:'flex',gap:'12px',marginBottom:'8px'}});
-      top.appendChild(h('div',{style:{width:'44px',height:'44px',borderRadius:'12px',background:C.bg,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'24px',flexShrink:'0'}},g.ic));
-      top.appendChild(h('div',{style:{flex:'1'}},h('div',{style:{fontWeight:'700',fontSize:'14px',color:C.txt}},g.name),h('div',{style:{fontSize:'11px',color:C.sub}},g.cnt+' · '+g.act)));
-      top.appendChild(btn('进入',{alignSelf:'center',padding:'8px 14px',background:C.card,color:C.txt,border:`1px solid ${C.border}`,borderRadius:'8px',fontSize:'12px',fontWeight:'600'},e=>{e.stopPropagation();setState({activeGroup:g});}));
-      el.appendChild(top);
-      el.appendChild(h('p',{style:{margin:'0 0 8px',fontSize:'12px',color:C.sub,lineHeight:'1.7'}},g.desc));
-      el.appendChild(h('span',{style:{padding:'3px 10px',background:g.tc+'20',color:g.tc,borderRadius:'6px',fontSize:'11px',fontWeight:'600'}},'🔥 '+g.tag));
-      scroll.appendChild(el);
-    });
-    chatLeft.appendChild(scroll);
-    const gHint = h('div',{style:{flex:'1',display:'flex',alignItems:'center',justifyContent:'center',flexDirection:'column',gap:'12px',color:C.light}});
-    gHint.appendChild(h('div',{style:{fontSize:'48px'}},'👥'));
-    gHint.appendChild(h('div',{style:{fontSize:'14px'}},'选择一个小组进入群聊'));
-    chatRight.appendChild(gHint);
-  }
   return wrap;
 }
 
-
-// ─── PEER PRIVATE CHAT ────────────────────────────────────────────────────────
-function buildPeerChatPage(peer) {
-  // 手机端全屏私聊页
-  const wrap = h('div',{style:{display:'flex',flexDirection:'column',height:'100vh',background:C.bg}});
-  const hdr = h('div',{class:'top-hdr'});
-  hdr.appendChild(btn('‹',{background:'none',border:'none',fontSize:'22px',color:'#2C2C2C',padding:'0 8px 0 0'},()=>setState({activePeer:null})));
-  hdr.appendChild(h('div',{style:{fontWeight:'700',fontSize:'16px',color:C.txt,position:'absolute',left:'50%',transform:'translateX(-50%)'}},peer.name+' · '+peer.grade));
-  hdr.appendChild(h('div',{style:{width:'40px'}}));
-  wrap.appendChild(hdr);
-  const inner = buildPeerChat(peer);
-  inner.style.paddingTop='60px';
-  wrap.appendChild(inner);
-  return wrap;
-}
-
-function buildPeerChat(peer) {
-  const peerMsgs = [
-    {u:'peer', text:`你好！我是${peer.name}，${peer.grade}。看到你也在这里，感觉挺亲切的 🌸`},
-    {u:'peer', text:`"${peer.quote}"
-我也有类似的感受，你呢？`},
-  ];
-  const wrap = h('div',{style:{display:'flex',flexDirection:'column',flex:'1',height:'100%',overflow:'hidden',background:C.bg}});
-  // Peer info bar
-  const infoBar = h('div',{style:{padding:'12px 20px',background:C.card,borderBottom:`1px solid ${C.border}`,display:'flex',alignItems:'center',gap:'12px',flexShrink:'0'}});
-  infoBar.appendChild(h('div',{style:{width:'40px',height:'40px',borderRadius:'50%',background:C.brownL,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'20px'}},peer.av));
-  const peerInfo = h('div',null);
-  peerInfo.appendChild(h('div',{style:{fontWeight:'700',fontSize:'14px',color:C.txt}},peer.name+' · '+peer.grade));
-  const tagRow = h('div',{style:{display:'flex',gap:'4px',marginTop:'3px'}});
-  peer.tags.forEach(tg=>tagRow.appendChild(h('span',{style:{padding:'1px 7px',background:C.brownL,color:C.brown,borderRadius:'5px',fontSize:'10px',fontWeight:'600'}},tg)));
-  peerInfo.appendChild(tagRow);
-  infoBar.appendChild(peerInfo);
-  infoBar.appendChild(h('div',{style:{marginLeft:'auto',fontSize:'11px',color:C.light}},'匿名私聊 · 安全'));
-  wrap.appendChild(infoBar);
-
-  // Messages
-  const msgsDiv = h('div',{style:{flex:'1',overflowY:'auto',padding:'16px 20px 0'}});
-  function addPeerMsg(role, text) {
-    const row = h('div',{style:{display:'flex',justifyContent:role==='user'?'flex-end':'flex-start',marginBottom:'14px',gap:'8px'}});
-    if(role!=='user') row.appendChild(h('div',{class:'avatar',style:{background:C.brownL}},peer.av));
-    const col = h('div',null);
-    col.appendChild(h('div',{class:`bubble ${role==='user'?'user':'ai'}`},text));
-    col.appendChild(h('div',{style:{fontSize:'10px',color:C.light,marginTop:'3px',textAlign:role==='user'?'right':'left'}},new Date().toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'})));
-    row.appendChild(col);
-    if(role==='user') row.appendChild(h('div',{class:'avatar',style:{background:'#F0D8C0'}},'👤'));
-    msgsDiv.appendChild(row);
-    msgsDiv.scrollTo({top:msgsDiv.scrollHeight,behavior:"smooth"});
-  }
-  peerMsgs.forEach(m=>addPeerMsg(m.u==='peer'?'ai':'user', m.text));
-  wrap.appendChild(msgsDiv);
-
-  // Input
-  const inputRow = h('div',{class:'chat-input-row'});
-  const inp = h('input',{class:'chat-input',placeholder:`和 ${peer.name} 说点什么…`});
-  const peerReplies = [
-    "我完全理解你说的感受，有时候真的很难撑 😔",
-    "你不是一个人，我也经历过类似的事情 🌿",
-    "听你说完，感觉你承受了好多，好好的 💙",
-    "我也不知道怎么办，但至少我们可以一起想想 🌸",
-    "你有没有试过……不对，先问你：现在最难受的是什么？",
-    "抱抱你 🫂 能说说更多吗？",
-    "哈哈我也这样！真的，你不奇怪 ✨",
-    "这件事确实很难，换我也会很崩溃的 🌧️",
-  ];
-  const sb = btn('▶',{},()=>{
-    const t=inp.value.trim(); if(!t) return; inp.value='';
-    addPeerMsg('user',t);
-    setTimeout(()=>{
-      const reply = peerReplies[Math.floor(Math.random()*peerReplies.length)];
-      addPeerMsg('ai',reply);
-    },800+Math.random()*600);
-  });
-  sb.className='send-btn';
-  inp.onkeydown=e=>{if(e.key==='Enter')sb.onclick();};
-  inputRow.appendChild(inp); inputRow.appendChild(sb);
-  wrap.appendChild(inputRow);
-  setTimeout(()=>{msgsDiv.scrollTo({top:msgsDiv.scrollHeight,behavior:"smooth"});},50);
-  return wrap;
-}
 
 // ═══════════════════════════════════════════════════════════════════
 // AGENT 调度器 v2 —— 全模块覆盖
@@ -2793,7 +2802,7 @@ const SKILL_REGISTRY = (() => {
 
     // ── 趣测馆：热门测试（QUIZZES）──
     quiz_mbti: { icon:'🌈', label:'MBTI 性格测试', desc:'了解你的性格类型',    module:'趣测馆',
-                 action:()=>setState({quizActive:createMbtiFullVersion(),quizStep:0,quizAns:{},quizResult:null,page:'quiz',returnTo:'chat'}) },
+                 action:()=>{ const q=QUIZZES.find(x=>x.id==='mbti'); if(q) setState({quizActive:q,quizStep:0,quizAns:{},quizResult:null,page:'quiz',returnTo:'chat'}); }},
     quiz_stress:{ icon:'🌊', label:'压力自测',    desc:'评估你的压力指数',     module:'趣测馆',
                  action:()=>{ const q=QUIZZES.find(x=>x.id==='stress'); if(q) setState({quizActive:q,quizStep:0,quizAns:{},quizResult:null,page:'quiz',returnTo:'chat'}); }},
     quiz_eq:   { icon:'💛', label:'情商测试',     desc:'了解你的情绪智力',     module:'趣测馆',
@@ -2964,7 +2973,7 @@ function agentSkillCompleted(skillLabel, resultSummary) {
     Object.entries(SKILL_REGISTRY).find(([,v])=>v.label===skillLabel)?.[0] || ''
   );
   setState({
-    page:'chat', chatTab:'ai',
+    page:'chat',
     activeRelax:null, breathPhase:null, breathCycle:0, medStarted:false, medStep:0,
     quizActive:null, quizStep:0, quizAns:{}, quizResult:null,
     kDetail:null, returnTo:null
@@ -3148,7 +3157,7 @@ async function sendAI(userMsg, aiCtx) {
     const streamMsgs = [...newMsgs, {role:'ai', text:''}];
     setState({chatMsgs:streamMsgs, chatLoading:true});
 
-    const profileCtx = buildProfileContext();
+    const memoryCtx = buildMemoryContext();
 
     const chatRes = await fetch(API_URL, {
       method: 'POST', signal,
@@ -3177,6 +3186,14 @@ async function sendAI(userMsg, aiCtx) {
               '- 自我慈悲三要素：自我善意、共通人性、正念觉察\n' +
               '- 成长型思维：能力可以培养，困难是成长机会\n' +
               '- ACT核心理念：接纳不可改变的，承诺行动改善可改变的\n\n' +
+              '【核心能力：长期记忆与个性化】\n' +
+              '- 你拥有用户的完整记忆档案（见下方"用户记忆档案"），包括基本资料、全部心理测试结果、情绪日记趋势、感恩日记、历史对话摘要、成长成就等。\n' +
+              '- 每次对话时，主动回顾这些信息，像老朋友一样自然地提及对方过去分享过的事。例如："上次你提到考试压力大，现在怎么样了？"\n' +
+              '- 如果用户的情绪记录显示连续走低，温和地表达关心："我注意到你最近几天的情绪记录都不是太好，想聊聊吗？"\n' +
+              '- 如果对方做过某项心理测试，在相关话题中自然引用其结果类型特征。\n' +
+              '- 参考历史对话避免重复给出相同的建议，体现"我记得你上次说过…"的连续性。\n' +
+              '- 看到感恩日记内容时，可以将其作为积极心理学介入的素材，强化已有的正向关注。\n' +
+              '- 个性化但不生硬：不要像读报告一样罗列数据，而是将记忆自然地编织进对话中。\n\n' +
               '底线：不做医疗诊断；若用户提到自我伤害，温柔但明确告知拨打12356或联系学校心理中心。\n\n' +
               '【格式禁令 - 必须严格遵守】\n' +
               '绝对禁止在回复中出现任何括号内的说明、策略注释或内心独白，例如：\n' +
@@ -3185,10 +3202,10 @@ async function sendAI(userMsg, aiCtx) {
               '禁止：任何 (xxx) 或 （xxx） 形式的括号注解\n' +
               '正确示例："你还好吗？这件事确实很难，发生什么了？"\n' +
               '直接说话，不要暴露任何思考框架或策略标注。' +
-              (profileCtx ? '\n\n' + profileCtx : '') +
+              (memoryCtx ? memoryCtx : '') +
               (aiCtx ? '\n\n' + aiCtx : '')
           },
-          ...newMsgs.slice(-12)
+          ...newMsgs.slice(-20)
             .filter(m => m.role !== 'system-notice')
             .map(m => ({
               role: m.role==='ai'?'assistant':'user',
@@ -3525,13 +3542,45 @@ function renderGratitude() {
     row.appendChild(inp);
     c.appendChild(row);
   });
+
+  // ── 本地反馈区域（保存成功后显示）──
+  const feedbackArea = h('div',{id:'grat-feedback',style:{display:'none',padding:'12px 16px',borderRadius:'10px',background:C.greenL,color:C.green,fontSize:'13px',fontWeight:'600',marginBottom:'10px',textAlign:'center'}});
+  c.appendChild(feedbackArea);
+
   c.appendChild(btn('保存今天的感恩 🌻',{width:'100%',padding:'14px',background:G_BROWN,color:'#fff',border:'none',borderRadius:'12px',fontSize:'14px',fontWeight:'700',marginTop:'4px'},()=>{
     const filled=state.gratItems.filter(i=>i.trim());
-    if(!filled.length) return;
+    if(!filled.length){
+      feedbackArea.style.display='block';
+      feedbackArea.style.background=C.brownL;
+      feedbackArea.style.color=C.brown;
+      feedbackArea.textContent='请至少写一件感恩的事 ✍️';
+      setTimeout(()=>{ feedbackArea.style.display='none'; },2000);
+      return;
+    }
     const saved=[{date:new Date().toLocaleDateString('zh-CN',{month:'numeric',day:'numeric'}),items:filled},...state.gratSaved].slice(0,30);
+    try { localStorage.setItem('lx_grat', JSON.stringify(saved)); } catch{}
     setState({gratSaved:saved,gratItems:['','','']});
-    // ── 闭环反馈：保存后自动通知 AI ──
-    setTimeout(()=>agentSkillCompleted('感恩日记', `记录了${filled.length}件感恩的事`), 500);
+    // ── 本地反馈：保存成功，不跳转 ──
+    setTimeout(()=>{
+      const fa=document.getElementById('grat-feedback');
+      if(fa){ fa.style.display='block'; fa.style.background=C.greenL; fa.style.color=C.green; fa.textContent=`✓ 已保存！今天记录了${filled.length}件感恩的事 🌻`; }
+    },100);
+  }));
+
+  // ── 独立按钮：自愿触发与 AI 对话 ──
+  c.appendChild(btn('💬 和 AI 聊聊今天的感恩',{width:'100%',padding:'12px',background:C.card,color:C.green,border:`1.5px solid ${C.green}`,borderRadius:'12px',fontSize:'13px',fontWeight:'600',marginTop:'8px'},()=>{
+    const filled=state.gratItems.filter(i=>i.trim());
+    const recent = state.gratSaved[0];
+    if(!filled.length && !recent){
+      feedbackArea.style.display='block';
+      feedbackArea.style.background=C.brownL;
+      feedbackArea.style.color=C.brown;
+      feedbackArea.textContent='先记录一些感恩的事，再来聊聊吧 ✍️';
+      setTimeout(()=>{ feedbackArea.style.display='none'; },2000);
+      return;
+    }
+    const summary = recent ? `记录了${recent.items.length}件感恩的事：${recent.items.join('、')}` : `记录了${filled.length}件感恩的事`;
+    agentSkillCompleted('感恩日记', summary);
   }));
   body.appendChild(c);
   if(gratSaved.length>0) {
@@ -3619,9 +3668,12 @@ function renderDoodle() {
   body.appendChild(colorRow);
 
   // ── Canvas ──
-  const canvasWrap = h('div',{class:'canvas-wrap'});
-  const cvs = h('canvas',{id:'doodle-canvas',width:'880',height:'560',style:{width:'100%',height:'auto',display:'block',cursor:'crosshair',touchAction:'none'}});
+  const canvasWrap = h('div',{class:'canvas-wrap',style:{position:'relative'}});
+  const cvs = h('canvas',{id:'doodle-canvas',width:'880',height:'560',style:{width:'100%',height:'auto',display:'block',cursor:'none',touchAction:'none'}});
   canvasWrap.appendChild(cvs);
+  // 笔刷光标指示器：跟随鼠标显示当前画笔大小与颜色，解决浅色背景上看不清光标的问题
+  const cursorDot = h('div',{style:{position:'absolute',left:'0',top:'0',borderRadius:'50%',pointerEvents:'none',border:'2px solid #B07B3A',transform:'translate(-50%,-50%)',display:'none',zIndex:'10',boxSizing:'border-box',transition:'width .12s,height .12s,border-color .12s,background .12s'}});
+  canvasWrap.appendChild(cursorDot);
   body.appendChild(canvasWrap);
   body.appendChild(h('p',{style:{textAlign:'center',fontSize:'12px',color:C.sub,marginTop:'8px'}},'情绪没有对错，随心所欲地画吧 🌈'));
   wrap.appendChild(body);
@@ -3635,6 +3687,27 @@ function renderDoodle() {
       const r=c.getBoundingClientRect();
       const src=e.touches?e.touches[0]:e;
       return{x:(src.clientX-r.left)*(c.width/r.width),y:(src.clientY-r.top)*(c.height/r.height)};
+    };
+    // 更新笔刷光标指示器：根据当前工具/颜色/大小显示圆圈，让用户始终知道画笔位置
+    const updateCursor=(e)=>{
+      const r=c.getBoundingClientRect();
+      const src=e.touches?e.touches[0]:e;
+      const dispX=src.clientX-r.left;
+      const dispY=src.clientY-r.top;
+      const scale=r.width/c.width;
+      const brushSize=(local.tool==='eraser'?local.size*4:local.size)*scale;
+      cursorDot.style.display='block';
+      cursorDot.style.left=dispX+'px';
+      cursorDot.style.top=dispY+'px';
+      cursorDot.style.width=Math.max(brushSize,10)+'px';
+      cursorDot.style.height=Math.max(brushSize,10)+'px';
+      if(local.tool==='eraser'){
+        cursorDot.style.border='2px dashed #666';
+        cursorDot.style.background='rgba(100,100,100,0.1)';
+      }else{
+        cursorDot.style.border='2px solid '+local.color;
+        cursorDot.style.background=local.color+'33';
+      }
     };
     const startDraw=(e)=>{
       e.preventDefault(); drawing=true;
@@ -3656,8 +3729,11 @@ function renderDoodle() {
       lastPos=pos;
     };
     const stopDraw=()=>{drawing=false;lastPos=null;};
-    c.addEventListener('mousedown',startDraw); c.addEventListener('mousemove',draw);
-    c.addEventListener('mouseup',stopDraw); c.addEventListener('mouseleave',stopDraw);
+    c.addEventListener('mousedown',startDraw);
+    c.addEventListener('mousemove',(e)=>{updateCursor(e);draw(e);});
+    c.addEventListener('mouseup',stopDraw);
+    c.addEventListener('mouseenter',updateCursor);
+    c.addEventListener('mouseleave',()=>{cursorDot.style.display='none';stopDraw();});
     c.addEventListener('touchstart',startDraw,{passive:false});
     c.addEventListener('touchmove',draw,{passive:false});
     c.addEventListener('touchend',stopDraw);
@@ -4025,6 +4101,7 @@ function renderProfile() {
     emptyCard.appendChild(btn('开始填写',{width:'100%',padding:'14px',background:G_BROWN,color:'#fff',border:'none',borderRadius:'14px',fontSize:'15px',fontWeight:'700'},()=>{
       const initProfile = {nickname:'',age:'',gender:'',grade:'',major:'',concerns:[],bio:'',testHistory:[],createdAt:new Date().toISOString()};
       saveProfile(initProfile);
+      render();
     }));
     wrap.appendChild(emptyCard);
     return wrap;
@@ -4075,16 +4152,29 @@ function renderProfile() {
   concernTags.forEach(tag=>{
     const isActive = (p.concerns||[]).includes(tag);
     const tb = btn(tag,{padding:'5px 12px',borderRadius:'14px',fontSize:'12px',fontWeight:'600',border:'1.5px solid '+(isActive?C.brown:C.border),background:isActive?C.brownL:C.card,color:isActive?C.brown:C.sub},()=>{
-      const cur = p.concerns||[];
-      const next = isActive ? cur.filter(t=>t!==tag) : [...cur,tag];
+      const cur = state.userProfile?.concerns || [];
+      const wasActive = cur.includes(tag);
+      const next = wasActive ? cur.filter(t=>t!==tag) : [...cur,tag];
       updateProfile({concerns:next});
+      // 局部 DOM 更新，不触发全局重绘
+      const nowActive = next.includes(tag);
+      tb.style.border = '1.5px solid '+(nowActive?C.brown:C.border);
+      tb.style.background = nowActive?C.brownL:C.card;
+      tb.style.color = nowActive?C.brown:C.sub;
     });
     tagRow.appendChild(tb);
   });
   concernRow.appendChild(tagRow);
   formCard.appendChild(concernRow);
 
-  formCard.appendChild(btn('💾 保存档案',{width:'100%',padding:'14px',background:G_BROWN,color:'#fff',border:'none',borderRadius:'14px',fontSize:'15px',fontWeight:'700'},()=>{}));
+  const saveBtn = btn('💾 保存档案',{width:'100%',padding:'14px',background:G_BROWN,color:'#fff',border:'none',borderRadius:'14px',fontSize:'15px',fontWeight:'700'},()=>{
+    // 已经通过 onchange 实时保存，这里给视觉反馈
+    const orig = saveBtn.textContent;
+    saveBtn.textContent = '✓ 已保存';
+    saveBtn.style.opacity = '0.8';
+    setTimeout(()=>{ saveBtn.textContent=orig; saveBtn.style.opacity='1'; },1500);
+  });
+  formCard.appendChild(saveBtn);
 
   formCard.appendChild(btn('🗑 删除档案',{width:'100%',padding:'12px',background:'none',color:'#E07070',border:'1.5px solid #E07070',borderRadius:'14px',fontSize:'14px',fontWeight:'600',marginTop:'8px'},()=>{
     if(confirm('确定删除个人档案吗？测试记录将一并清除。')){
@@ -4246,7 +4336,7 @@ function renderAbout() {
 // ─── MAIN RENDER ─────────────────────────────────────────────────────────────
 const PAGE_META = {
   quiz:     {title:'趣测馆',     sub:'探索真实的你'},
-  chat:     {title:'暖心窝',     sub:'AI陪伴 · 同路人 · 群聊'},
+  chat:     {title:'暖心窝',     sub:'AI 陪伴 · 随时倾听'},
   knowledge:{title:'知愈馆',     sub:'知识治愈心灵'},
   mood:     {title:'心情馆',     sub:'记录每一刻的你'},
   about:    {title:'关于我们',   sub:'聆心'},
@@ -4262,7 +4352,7 @@ const NAV_ITEMS = [
 
 function navTo(id) {
   breathTimers.forEach(clearTimeout); breathTimers=[];
-  setState({page:id,quizActive:null,quizResult:null,kDetail:null,activeRelax:null,activeGroup:null,activePeer:null,returnTo:null});
+  setState({page:id,quizActive:null,quizResult:null,kDetail:null,activeRelax:null,returnTo:null});
 }
 
 function render() {
@@ -4284,7 +4374,7 @@ function render() {
   // ── Mobile nav ──
   const mNav = document.getElementById('mobile-nav');
   if(mNav) {
-    const hideNav = state.activeGroup || (state.page==='mood'&&state.activeRelax) ||
+    const hideNav = (state.page==='mood'&&state.activeRelax) ||
       (state.page==='quiz'&&(state.quizActive||state.quizResult)) || (state.page==='knowledge'&&state.kDetail);
     mNav.style.display = hideNav ? 'none' : '';
     mNav.innerHTML = '';
@@ -4301,7 +4391,7 @@ function render() {
   }
 
   // ── Topbar title ──
-  const isSubPage = state.quizActive||state.quizResult||state.kDetail||state.activeRelax||state.activeGroup;
+  const isSubPage = state.quizActive||state.quizResult||state.kDetail||state.activeRelax;
   const meta = PAGE_META[state.page];
   const tbTitle = document.getElementById('tb-title');
   const tbSub = document.getElementById('tb-sub');
@@ -4314,7 +4404,7 @@ function render() {
     state.activeRelax==='meditate' ? '🌌 冥想引导' :
     state.activeRelax==='gratitude' ? '🌻 感恩日记' :
     state.activeRelax==='doodle' ? '🎨 涂鸦释放' :
-    state.activeGroup ? state.activeGroup.name : meta.title
+    meta.title
   ) : meta.title;
   if(tbSub) tbSub.textContent = isSubPage ? '' : meta.sub;
 
@@ -4330,9 +4420,7 @@ function render() {
       backB.title = fromChat ? '回到暖心窝对话' : '返回上一页';
       backB.onclick = ()=>{
         breathTimers.forEach(clearTimeout); breathTimers=[];
-        if(state.activeGroup) {
-          setState({activeGroup:null});
-        } else if(state.activeRelax) {
+        if(state.activeRelax) {
           setState({page:fromChat?'chat':state.page,activeRelax:null,breathPhase:null,breathCycle:0,medStarted:false,medStep:0,returnTo:null});
         } else if(state.kDetail) {
           setState({page:fromChat?'chat':state.page,kDetail:null,returnTo:null});
@@ -4390,9 +4478,7 @@ function render() {
     state.quizResult ? 'result' : '',
     state.kDetail ? state.kDetail.title : '',
     state.activeRelax || '',
-    state.activeGroup ? state.activeGroup.name : '',
     state.showHistory ? 'hist' : '',
-    state.chatTab || '',
   ].join('|');
   const sceneChanged = (content._sceneKey !== sceneKey);
   content._sceneKey = sceneKey;
