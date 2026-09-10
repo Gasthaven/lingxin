@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -122,6 +123,7 @@ textarea{resize:none}
 .g-green{background:linear-gradient(135deg,#4A7A68,#2E5A48)}
 .g-rose{background:linear-gradient(135deg,#A06868,#7A4848)}
 .g-purple{background:linear-gradient(135deg,#C8A0C0,#8870A8,#6858A0)}
+.g-teal{background:linear-gradient(135deg,#5BAEB0,#3E8E90,#2A6E72)}
 
 /* Grids */
 .quiz-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
@@ -316,7 +318,7 @@ body.dark .chat-input::placeholder{color:var(--light)}
 
 /* banner / 气泡文字（彩色背景白字，不受变量影响） */
 body.dark .banner h2,body.dark .banner .sub,body.dark .banner .label,body.dark .banner .icon{color:inherit}
-body.dark .g-brown *,body.dark .g-green *,body.dark .g-rose *,body.dark .g-purple *{color:#fff}
+body.dark .g-brown *,body.dark .g-green *,body.dark .g-rose *,body.dark .g-purple *,body.dark .g-teal *{color:#fff}
 body.dark .bubble.user{color:#fff}
 
 /* 深色模式切换按钮动画 */
@@ -508,6 +510,7 @@ const G_BROWN = 'linear-gradient(135deg,#C8894A,#A06830)';
 const G_GREEN = 'linear-gradient(135deg,#4A7A68,#2E5A48)';
 const G_ROSE  = 'linear-gradient(135deg,#A06868,#7A4848)';
 const G_PURPLE = 'linear-gradient(135deg,#C8A0C0,#8870A8,#6858A0)';
+const G_TEAL   = 'linear-gradient(135deg,#5BAEB0,#3E8E90,#2A6E72)';
 
 // ─── MBTI 16 TYPE DEFINITIONS ────────────────────────────────────────────────
 const MBTI_TYPES = {
@@ -3742,12 +3745,20 @@ function renderDoodle() {
 }
 // ─── 成长系统 ───────────────────────────────────────────────────────────────
 const BADGES = [
-  {id:'quiz3', ic:'🎭', name:'初识自己', desc:'完成3个心理测试'},
-  {id:'mood7', ic:'🌻', name:'心灵园丁', desc:'连续7天记录心情'},
-  {id:'nightowl', ic:'🦉', name:'深夜守护者', desc:'在深夜时段使用聊天'},
-  {id:'knowledge5', ic:'📚', name:'知识探索者', desc:'阅读5篇心理科普'},
-  {id:'breathe10', ic:'🫁', name:'呼吸大师', desc:'完成10次呼吸练习'},
-  {id:'chat20', ic:'💬', name:'倾诉达人', desc:'发送20条聊天消息'},
+  // ── 基础徽章（tier 1）──
+  {id:'quiz3',       ic:'🎭', name:'初识自己',   desc:'完成3个心理测试',     tier:1, condition:'完成3个心理测试'},
+  {id:'mood7',       ic:'🌻', name:'心灵园丁',   desc:'连续7天记录心情',     tier:1, condition:'连续7天记录心情'},
+  {id:'nightowl',    ic:'🦉', name:'深夜守护者', desc:'在深夜时段使用聊天',   tier:1, condition:'在22:00-06:00时段使用聊天'},
+  {id:'knowledge5',  ic:'📚', name:'知识探索者', desc:'阅读5篇心理科普',     tier:1, condition:'阅读5篇心理科普'},
+  {id:'breathe10',   ic:'🫁', name:'呼吸大师',   desc:'完成10次呼吸练习',    tier:1, condition:'完成10次呼吸练习'},
+  {id:'chat20',      ic:'💬', name:'倾诉达人',   desc:'发送20条聊天消息',     tier:1, condition:'发送20条聊天消息'},
+  // ── 进阶徽章（tier 2）──
+  {id:'quiz10',      ic:'🏆', name:'深度探索者', desc:'完成10个心理测试',    tier:2, condition:'完成10个心理测试'},
+  {id:'mood30',      ic:'🌳', name:'心灵守护者', desc:'连续30天记录心情',    tier:2, condition:'连续30天记录心情'},
+  {id:'dawnbreak',   ic:'🌅', name:'晨光使者',   desc:'在清晨时段使用',       tier:2, condition:'在06:00-08:00时段使用'},
+  {id:'knowledge20', ic:'📖', name:'知识智者',   desc:'阅读20篇心理科普',    tier:2, condition:'阅读20篇心理科普'},
+  {id:'breathe30',   ic:'🌬️', name:'呼吸宗师',   desc:'完成30次呼吸练习',    tier:2, condition:'完成30次呼吸练习'},
+  {id:'chat100',     ic:'💌', name:'知心挚友',   desc:'发送100条聊天消息',   tier:2, condition:'发送100条聊天消息'},
 ];
 const TREE_STAGES = [
   {min:0,  emoji:'🌰', label:'一颗种子', hint:'开始你的自我关怀之旅吧'},
@@ -3768,9 +3779,10 @@ function saveAchievements(ach) {
 function notifyBadge(id) {
   const b = BADGES.find(x=>x.id===id);
   if (!b) return;
+  const tierLabel = b.tier===2 ? '🌟 进阶徽章' : '⭐ 获得徽章';
   const toast = document.createElement('div');
   toast.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);z-index:9999;background:linear-gradient(135deg,#3D2A10,#5A3A18);color:#fff;padding:24px 32px;border-radius:18px;text-align:center;box-shadow:0 12px 48px rgba(0,0,0,.4);animation:badgePop .45s cubic-bezier(.34,1.56,.64,1) both;pointer-events:none;';
-  toast.innerHTML = `<div style="font-size:48px;margin-bottom:8px">${b.ic}</div><div style="font-size:12px;opacity:.7;letter-spacing:2px;margin-bottom:4px">🏅 获得徽章</div><div style="font-size:18px;font-weight:800;margin-bottom:4px">${b.name}</div><div style="font-size:12px;opacity:.8">${b.desc}</div>`;
+  toast.innerHTML = `<div style="font-size:48px;margin-bottom:8px">${b.ic}</div><div style="font-size:12px;opacity:.7;letter-spacing:2px;margin-bottom:4px">🏅 ${tierLabel}</div><div style="font-size:18px;font-weight:800;margin-bottom:4px">${b.name}</div><div style="font-size:12px;opacity:.8">${b.desc}</div>`;
   document.body.appendChild(toast);
   setTimeout(()=>{ toast.style.transition='opacity .4s'; toast.style.opacity='0'; setTimeout(()=>toast.remove(),400); }, 3000);
 }
@@ -3782,19 +3794,7 @@ function trackAction(type) {
   const now = new Date();
   ach.events.push({type, date: now.toISOString().slice(0,10), hour: now.getHours()});
 
-  // 解锁判定
-  ach.badges = ach.badges || [];
-  const quizCount = ach.events.filter(e=>e.type==='quiz').length;
-  const moodDays = new Set(ach.events.filter(e=>e.type==='mood').map(e=>e.date)).size;
-  const hasNight = ach.events.some(e=>e.type==='chat' && (e.hour>=22||e.hour<6));
-  const knowledgeCount = ach.events.filter(e=>e.type==='knowledge').length;
-  const breatheCount = ach.events.filter(e=>e.type==='breathe').length;
-  const chatCount = ach.events.filter(e=>e.type==='chat').length;
-
-  const checks = {quiz3: quizCount>=3, mood7: moodDays>=7, nightowl: hasNight, knowledge5: knowledgeCount>=5, breathe10: breatheCount>=10, chat20: chatCount>=20};
-  Object.entries(checks).forEach(([id, ok]) => { if (ok && !ach.badges.includes(id)) { ach.badges.push(id); notifyBadge(id); } });
-
-  // 连续心情记录奖励
+  // 连续心情记录（需在徽章判定前计算）
   ach.moodStreak = ach.moodStreak || 0;
   const today = now.toISOString().slice(0,10);
   const yesterday = new Date(now-86400000).toISOString().slice(0,10);
@@ -3805,7 +3805,47 @@ function trackAction(type) {
     ach._lastStreakDate = today;
   }
 
+  // 解锁判定
+  ach.badges = ach.badges || [];
+  const quizCount = ach.events.filter(e=>e.type==='quiz').length;
+  const moodStreak = ach.moodStreak || 0;
+  const hasNight = ach.events.some(e=>e.type==='chat' && (e.hour>=22||e.hour<6));
+  const hasDawn = ach.events.some(e => e.hour>=6 && e.hour<8);
+  const knowledgeCount = ach.events.filter(e=>e.type==='knowledge').length;
+  const breatheCount = ach.events.filter(e=>e.type==='breathe').length;
+  const chatCount = ach.events.filter(e=>e.type==='chat').length;
+
+  const checks = {
+    quiz3: quizCount>=3,        quiz10: quizCount>=10,
+    mood7: moodStreak>=7,       mood30: moodStreak>=30,
+    nightowl: hasNight,        dawnbreak: hasDawn,
+    knowledge5: knowledgeCount>=5,  knowledge20: knowledgeCount>=20,
+    breathe10: breatheCount>=10,    breathe30: breatheCount>=30,
+    chat20: chatCount>=20,          chat100: chatCount>=100,
+  };
+  Object.entries(checks).forEach(([id, ok]) => { if (ok && !ach.badges.includes(id)) { ach.badges.push(id); notifyBadge(id); } });
+
   saveAchievements(ach);
+}
+
+function getBadgeProgress(id, ach) {
+  const events = ach.events || [];
+  const moodStreak = ach.moodStreak || 0;
+  switch(id) {
+    case 'quiz3':       return {current: events.filter(e=>e.type==='quiz').length, target:3,  unit:'个测试'};
+    case 'quiz10':      return {current: events.filter(e=>e.type==='quiz').length, target:10, unit:'个测试'};
+    case 'mood7':       return {current: moodStreak, target:7,  unit:'天'};
+    case 'mood30':      return {current: moodStreak, target:30, unit:'天'};
+    case 'nightowl':    return {current: events.some(e=>e.type==='chat'&&(e.hour>=22||e.hour<6))?1:0, target:1, unit:'次'};
+    case 'dawnbreak':   return {current: events.some(e=>e.hour>=6&&e.hour<8)?1:0, target:1, unit:'次'};
+    case 'knowledge5':  return {current: events.filter(e=>e.type==='knowledge').length, target:5,  unit:'篇'};
+    case 'knowledge20': return {current: events.filter(e=>e.type==='knowledge').length, target:20, unit:'篇'};
+    case 'breathe10':   return {current: events.filter(e=>e.type==='breathe').length, target:10, unit:'次'};
+    case 'breathe30':   return {current: events.filter(e=>e.type==='breathe').length, target:30, unit:'次'};
+    case 'chat20':      return {current: events.filter(e=>e.type==='chat').length, target:20,  unit:'条'};
+    case 'chat100':     return {current: events.filter(e=>e.type==='chat').length, target:100, unit:'条'};
+    default: return {current:0, target:1, unit:''};
+  }
 }
 
 function getTreeStage() {
@@ -3843,50 +3883,81 @@ function renderMood() {
   inner.appendChild(treeCard);
 
   // ── 徽章 ──
-  const badgeCard = card({padding:'14px',marginBottom:'12px'});
-  badgeCard.appendChild(h('div',{style:{fontWeight:'700',fontSize:'14px',color:C.txt,marginBottom:'10px'}},'🏅 我的徽章'));
-  const badgeRow = h('div',{style:{display:'flex',gap:'8px',flexWrap:'wrap'}});
-  const earned = ach.badges||[];
-  BADGES.forEach(b=>{
-    const earned_ = earned.includes(b.id);
-    const bb = h('div',{style:{padding:'8px 12px',borderRadius:'10px',background:earned_?C.brownL:C.bg,border:`1px solid ${earned_?C.brown:C.border}`,textAlign:'center',flex:'1',minWidth:'70px',opacity:earned_?'1':'0.5'}});
-    bb.appendChild(h('div',{style:{fontSize:'22px'}},b.ic));
-    bb.appendChild(h('div',{style:{fontSize:'10px',fontWeight:'600',color:earned_?C.brown:C.sub,marginTop:'2px'}},b.name));
-    bb.title = b.desc;
-    badgeRow.appendChild(bb);
+  const badgeCard = card({padding:'16px',marginBottom:'12px'});
+  badgeCard.appendChild(h('div',{style:{fontWeight:'700',fontSize:'14px',color:C.txt,marginBottom:'4px'}},'🏅 我的徽章'));
+  badgeCard.appendChild(h('div',{style:{fontSize:'11px',color:C.sub,marginBottom:'12px'}},'完成对应任务即可解锁，快来看看你还差多少吧'));
+  const earnedBadges = ach.badges||[];
+  const badgeTiers = [
+    {label:'⭐ 基础徽章', items: BADGES.filter(b=>!b.tier || b.tier===1)},
+    {label:'🌟 进阶徽章', items: BADGES.filter(b=>b.tier===2)},
+  ];
+  badgeTiers.forEach(tier => {
+    badgeCard.appendChild(h('div',{style:{fontSize:'12px',fontWeight:'700',color:C.brown,margin:'10px 0 8px'}},tier.label));
+    const grid = h('div',{style:{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:'8px',marginBottom:'8px'}});
+    tier.items.forEach(b => {
+      const isEarned = earnedBadges.includes(b.id);
+      const prog = getBadgeProgress(b.id, ach);
+      const pct = Math.min(100, (prog.current/prog.target)*100);
+      const bb = h('div',{style:{padding:'10px',borderRadius:'12px',background:isEarned?C.brownL:C.bg,border:`1.5px solid ${isEarned?C.brown:C.border}`,opacity:isEarned?'1':'0.75',transition:'all .2s'}});
+      const hdr = h('div',{style:{display:'flex',alignItems:'center',gap:'6px',marginBottom:'6px'}});
+      hdr.appendChild(h('span',{style:{fontSize:'22px',filter:isEarned?'none':'grayscale(0.6)'}},b.ic));
+      hdr.appendChild(h('span',{style:{fontSize:'12px',fontWeight:'700',color:isEarned?C.brown:C.sub,flex:'1'}},b.name));
+      if (isEarned) hdr.appendChild(h('span',{style:{fontSize:'10px',color:C.brown,fontWeight:'600'}},'✓'));
+      bb.appendChild(hdr);
+      bb.appendChild(h('div',{style:{fontSize:'10px',color:C.sub,lineHeight:'1.5',marginBottom:'6px'}},b.condition));
+      if (!isEarned) {
+        const pbar = h('div',{style:{height:'4px',background:C.border,borderRadius:'2px',overflow:'hidden'}});
+        pbar.appendChild(h('div',{style:{height:'100%',width:`${pct}%`,background:C.brown,borderRadius:'2px',transition:'width .3s'}}));
+        bb.appendChild(pbar);
+        bb.appendChild(h('div',{style:{fontSize:'10px',color:C.light,marginTop:'3px',textAlign:'right'}},`${prog.current}/${prog.target} ${prog.unit}`));
+      } else {
+        bb.appendChild(h('div',{style:{fontSize:'10px',color:C.brown,fontWeight:'600',marginTop:'2px'}},'已解锁'));
+      }
+      grid.appendChild(bb);
+    });
+    badgeCard.appendChild(grid);
   });
-  badgeCard.appendChild(badgeRow);
   inner.appendChild(badgeCard);
 
   // Mood checkin
   const mc = card({padding:'18px',marginBottom:'12px'});
   mc.appendChild(h('div',{style:{fontWeight:'700',fontSize:'15px',color:C.txt,marginBottom:'2px'}},'今天感觉怎么样？'));
   mc.appendChild(h('div',{style:{fontSize:'12px',color:C.sub,marginBottom:'14px'}},'每天30秒，慢慢了解自己'));
+  const todayStr = new Date().toLocaleDateString('zh-CN',{month:'numeric',day:'numeric'});
+  const todayEntry = state.moodDiaries.find(d=>d.date===todayStr);
+  // 回显：若 state 未设值但有今日记录，则从记录恢复
+  const displayMood = moodSel || (todayEntry ? todayEntry.mood : null);
   const moodRow = h('div',{class:'mood-btns'});
   MOODS.forEach(m=>{
-    const mb = h('button',{class:'mood-btn',style:{border:`2px solid ${moodSel?.lb===m.lb?m.col:C.border}`,background:moodSel?.lb===m.lb?m.col+'20':C.bg}},h('span',{style:{fontSize:'22px'}},m.em),h('span',{style:{fontSize:'10px',color:C.sub,fontWeight:'600'}},m.lb));
+    const mb = h('button',{class:'mood-btn',style:{border:`2px solid ${displayMood?.lb===m.lb?m.col:C.border}`,background:displayMood?.lb===m.lb?m.col+'20':C.bg}},h('span',{style:{fontSize:'22px'}},m.em),h('span',{style:{fontSize:'10px',color:C.sub,fontWeight:'600'}},m.lb));
     mb.onclick=()=>setState({moodSel:m});
     moodRow.appendChild(mb);
   });
   mc.appendChild(moodRow);
-  const ta = h('textarea',{rows:'3',placeholder:'今天发生了什么？有什么想说的…（选填）',style:{width:'100%',padding:'10px 12px',borderRadius:'10px',border:`1.5px solid ${C.border}`,fontSize:'13px',lineHeight:'1.7',outline:'none',background:C.bg,color:C.txt,display:'block',marginBottom:'12px'},value:moodNote});
-  ta.oninput=e=>{ state.moodNote=e.target.value; };
+  // textarea：不通过 h 的 value 属性设置（部分浏览器对未挂载 textarea 设 value 不可靠），改为创建后直接赋值
+  const ta = h('textarea',{rows:'3',placeholder:'今天发生了什么？有什么想说的…（选填）',style:{width:'100%',padding:'10px 12px',borderRadius:'10px',border:`1.5px solid ${C.border}`,fontSize:'13px',lineHeight:'1.7',outline:'none',background:C.bg,color:C.txt,display:'block',marginBottom:'12px'}});
+  // 回显笔记：优先用 state.moodNote，为空时回退到今日已保存的笔记
+  ta.value = moodNote || (todayEntry ? (todayEntry.note || '') : '');
+  ta.oninput = e => { state.moodNote = e.target.value; };
   mc.appendChild(ta);
-  const todayStr = new Date().toLocaleDateString('zh-CN',{month:'numeric',day:'numeric'});
-  const todayEntry = state.moodDiaries.find(d=>d.date===todayStr);
   const btnLabel = todayEntry ? '✏️ 修改今天的心情' : '保存今天的心情 🌸';
-  mc.appendChild(btn(btnLabel,{width:'100%',padding:'14px',background:moodSel?G_ROSE:C.border,color:'#fff',border:'none',borderRadius:'12px',fontSize:'14px',fontWeight:'700'},()=>{
-    if(!state.moodSel) return;
+  if (moodSaved) {
+    const ok = h('div',{style:{textAlign:'center',padding:'8px',marginBottom:'8px',borderRadius:'10px',background:C.brownL,color:C.brown,fontSize:'13px',fontWeight:'600'}},'✅ 心情已记录！');
+    mc.appendChild(ok);
+  }
+  mc.appendChild(btn(btnLabel,{width:'100%',padding:'14px',background:(displayMood||moodSel)?G_ROSE:C.border,color:'#fff',border:'none',borderRadius:'12px',fontSize:'14px',fontWeight:'700'},()=>{
+    const selMood = state.moodSel || displayMood;
+    if(!selMood) return;
     const now = new Date();
     const timeStr = now.toLocaleTimeString('zh-CN',{hour:'2-digit',minute:'2-digit'});
     if (todayEntry) {
-      todayEntry.mood = state.moodSel;
+      todayEntry.mood = selMood;
       todayEntry.note = state.moodNote.trim();
       todayEntry.time = timeStr;
       localStorage.setItem('lx_d',JSON.stringify(state.moodDiaries));
       setState({moodSaved:true,moodNote:''});
     } else {
-      const e={id:Date.now(),mood:state.moodSel,note:state.moodNote.trim(),date:todayStr,time:timeStr};
+      const e={id:Date.now(),mood:selMood,note:state.moodNote.trim(),date:todayStr,time:timeStr};
       const u=[e,...state.moodDiaries].slice(0,60);
       trackAction('mood'); localStorage.setItem('lx_d',JSON.stringify(u));
       setState({moodDiaries:u,moodSaved:true,moodNote:''});
@@ -4069,10 +4140,13 @@ function renderMood() {
   if(moodDiaries.length>0) {
     inner.appendChild(h('div',{style:{fontWeight:'700',fontSize:'15px',color:C.txt,marginBottom:'10px'}},'往期日记'));
     moodDiaries.forEach(d=>{
-      const dc = card({padding:'12px 16px',marginBottom:'8px',display:'flex',alignItems:'center',gap:'12px'});
-      dc.appendChild(h('span',{style:{fontSize:'22px'}},MOODS.find(m=>m.lb===d.mood?.lb)?.em||'😐'));
-      dc.appendChild(h('div',{style:{flex:'1'}},h('div',{style:{fontWeight:'600',fontSize:'13px',color:C.txt}},d.mood?.lb||'已记录'+(d.note?` · ${d.note.slice(0,20)}${d.note.length>20?'…':''}`:'')+'')));
-      dc.appendChild(h('div',{style:{fontSize:'11px',color:C.light}},d.date+' '+d.time));
+      const dc = card({padding:'12px 16px',marginBottom:'8px',display:'flex',alignItems:'flex-start',gap:'12px'});
+      dc.appendChild(h('span',{style:{fontSize:'22px',flexShrink:'0',marginTop:'2px'}},MOODS.find(m=>m.lb===d.mood?.lb)?.em||'😐'));
+      const info = h('div',{style:{flex:'1',minWidth:'0'}});
+      info.appendChild(h('div',{style:{fontWeight:'600',fontSize:'13px',color:C.txt}},d.mood?.lb||'已记录'));
+      if(d.note) info.appendChild(h('div',{style:{fontSize:'12px',color:C.sub,marginTop:'3px',lineHeight:'1.6',wordBreak:'break-word'}},d.note));
+      info.appendChild(h('div',{style:{fontSize:'11px',color:C.light,marginTop:'4px'}},d.date+' '+d.time));
+      dc.appendChild(info);
       inner.appendChild(dc);
     });
   }
@@ -4209,7 +4283,7 @@ function renderAbout() {
   // ── Hero banner ──
   const banner2 = h('div',{style:{
     borderRadius:'18px', overflow:'hidden', marginBottom:'24px',
-    background:'linear-gradient(135deg,#9B6FD4,#7850B8,#5E3A9A)',
+    background:'linear-gradient(135deg,#5BAEB0,#3E8E90,#2A6E72)',
     padding:'36px 36px', display:'flex', alignItems:'center', gap:'28px', position:'relative'
   }});
   // Decorative blobs
